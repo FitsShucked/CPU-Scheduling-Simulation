@@ -1,172 +1,203 @@
 rr_add is 1
 
 time 0ms: Simulator started for FCFS
-time 0ms: Proccess A arrives
-time 0ms: Proccess B arrives
-time 0ms: Proccess E arrives
-time 190ms: Proccess C arrives
-time 250ms: Proccess D arrives
 
-array capacity = 8. procceses = 5.
+array capacity = 4. procceses = 4.
 Process 1: A|0|0|168|5|287 --- State 0
 Process 2: B|0|0|385|1|0 --- State 0
-Process 3: E|0|0|168|5|287 --- State 0
-Process 4: C|190|190|97|5|2499 --- State 0
-Process 5: D|250|250|1770|2|822 --- State 0
-
-Process 1: A|0|0|168|5|287 --- State 0
-Process 2: E|0|0|168|5|287 --- State 0
-Process 3: B|0|0|385|1|0 --- State 0
-Process 4: C|190|190|97|5|2499 --- State 0
-Process 5: D|250|250|1770|2|822 --- State 0
-
-Process 1: A|168|0|168|4|287 --- State 1
-Process 2: E|168|0|168|4|287 --- State 1
 Process 3: C|190|190|97|5|2499 --- State 0
 Process 4: D|250|250|1770|2|822 --- State 0
-Process 5: B|385|0|385|0|0 --- State 1
-time 0ms	n = 5
 
+
+Process 1: A|0|0|168|5|287 --- State 0
+Process 2: B|0|0|385|1|0 --- State 0
+Process 3: C|190|190|97|5|2499 --- State 0
+Process 4: D|250|250|1770|2|822 --- State 0
+
+time 0ms: Process A arrives
+time 0ms: Process B arrives
+Process 1: A|168|0|168|4|287 --- State 1
+Process 2: C|190|190|97|5|2499 --- State 0
+Process 3: D|250|250|1770|2|822 --- State 0
+Process 4: B|385|0|385|0|0 --- State 1
+
+time 168ms: Process A starts using the CPU
 Process 1: C|190|190|97|5|2499 --- State 0
 Process 2: D|250|250|1770|2|822 --- State 0
 Process 3: B|385|0|385|0|0 --- State 1
 Process 4: A|455|0|168|4|287 --- State 2
-Process 5: E|455|0|168|4|287 --- State 2
-time 168ms	n = 5
 
+time 190ms: Process C arrives
 Process 1: D|250|250|1770|2|822 --- State 0
 Process 2: C|287|190|97|4|2499 --- State 1
 Process 3: B|385|0|385|0|0 --- State 1
 Process 4: A|455|0|168|4|287 --- State 2
-Process 5: E|455|0|168|4|287 --- State 2
-time 190ms	n = 5
 
+time 250ms: Process D arrives
 Process 1: C|287|190|97|4|2499 --- State 1
 Process 2: B|385|0|385|0|0 --- State 1
 Process 3: A|455|0|168|4|287 --- State 2
-Process 4: E|455|0|168|4|287 --- State 2
-Process 5: D|2020|250|1770|1|822 --- State 1
-time 250ms	n = 5
+Process 4: D|2020|250|1770|1|822 --- State 1
 
+time 287ms: Process C starts using the CPU
 Process 1: B|385|0|385|0|0 --- State 1
 Process 2: A|455|0|168|4|287 --- State 2
-Process 3: E|455|0|168|4|287 --- State 2
-Process 4: D|2020|250|1770|1|822 --- State 1
-Process 5: C|2786|190|97|4|2499 --- State 2
-time 287ms	n = 5
-B IS TERMINATED. n = 5
+Process 3: D|2020|250|1770|1|822 --- State 1
+Process 4: C|2786|190|97|4|2499 --- State 2
+
+time 385ms: Process B starts using the CPU
+time 385ms: Process B is terminated 
+Process 1: B|389|0|385|0|0 --- State 4
+Process 2: A|455|0|168|4|287 --- State 2
+Process 3: D|2020|250|1770|1|822 --- State 1
+Process 4: C|2786|190|97|4|2499 --- State 2
 
 Process 1: A|455|0|168|4|287 --- State 2
-Process 2: E|455|0|168|4|287 --- State 2
-Process 3: D|2020|250|1770|1|822 --- State 1
-Process 4: C|2786|190|97|4|2499 --- State 2
-time 385ms	n = 5
-
-Process 1: A|623|0|168|3|287 --- State 1
-Process 2: E|623|0|168|3|287 --- State 1
-Process 3: D|2020|250|1770|1|822 --- State 1
-Process 4: C|2786|190|97|4|2499 --- State 2
-time 455ms	n = 5
-
-Process 1: A|910|0|168|3|287 --- State 2
-Process 2: E|910|0|168|3|287 --- State 2
-Process 3: D|2020|250|1770|1|822 --- State 1
-Process 4: C|2786|190|97|4|2499 --- State 2
-time 623ms	n = 5
-
-Process 1: A|1078|0|168|2|287 --- State 1
-Process 2: E|1078|0|168|2|287 --- State 1
-Process 3: D|2020|250|1770|1|822 --- State 1
-Process 4: C|2786|190|97|4|2499 --- State 2
-time 910ms	n = 5
-
-Process 1: A|1365|0|168|2|287 --- State 2
-Process 2: E|1365|0|168|2|287 --- State 2
-Process 3: D|2020|250|1770|1|822 --- State 1
-Process 4: C|2786|190|97|4|2499 --- State 2
-time 1078ms	n = 5
-
-Process 1: A|1533|0|168|1|287 --- State 1
-Process 2: E|1533|0|168|1|287 --- State 1
-Process 3: D|2020|250|1770|1|822 --- State 1
-Process 4: C|2786|190|97|4|2499 --- State 2
-time 1365ms	n = 5
-
-Process 1: A|1820|0|168|1|287 --- State 2
-Process 2: E|1820|0|168|1|287 --- State 2
-Process 3: D|2020|250|1770|1|822 --- State 1
-Process 4: C|2786|190|97|4|2499 --- State 2
-time 1533ms	n = 5
-
-Process 1: A|1988|0|168|0|287 --- State 1
-Process 2: E|1988|0|168|0|287 --- State 1
-Process 3: D|2020|250|1770|1|822 --- State 1
-Process 4: C|2786|190|97|4|2499 --- State 2
-time 1820ms	n = 5
-
-Process 1: D|2020|250|1770|1|822 --- State 1
-Process 2: A|2275|0|168|0|287 --- State 2
-Process 3: E|2275|0|168|0|287 --- State 2
-Process 4: C|2786|190|97|4|2499 --- State 2
-time 1988ms	n = 5
-
-Process 1: A|2275|0|168|0|287 --- State 2
-Process 2: E|2275|0|168|0|287 --- State 2
+Process 2: D|2020|250|1770|1|822 --- State 1
 Process 3: C|2786|190|97|4|2499 --- State 2
-Process 4: D|2842|250|1770|1|822 --- State 2
-time 2020ms	n = 5
-A IS TERMINATED. n = 5
-E IS TERMINATED. n = 5
+
+time 455ms: Process A is finishes using the CPU
+Process 1: A|459|0|168|4|287 --- State 4
+Process 2: D|2020|250|1770|1|822 --- State 1
+Process 3: C|2786|190|97|4|2499 --- State 2
+
+time 459ms: Process A starts performing I/O
+time 459ms: Process A finishes performing I/O
+Process 1: A|627|0|168|3|287 --- State 1
+Process 2: D|2020|250|1770|1|822 --- State 1
+Process 3: C|2786|190|97|4|2499 --- State 2
+
+time 627ms: Process A starts using the CPU
+Process 1: A|914|0|168|3|287 --- State 2
+Process 2: D|2020|250|1770|1|822 --- State 1
+Process 3: C|2786|190|97|4|2499 --- State 2
+
+time 914ms: Process A is finishes using the CPU
+Process 1: A|918|0|168|3|287 --- State 4
+Process 2: D|2020|250|1770|1|822 --- State 1
+Process 3: C|2786|190|97|4|2499 --- State 2
+
+time 918ms: Process A starts performing I/O
+time 918ms: Process A finishes performing I/O
+Process 1: A|1086|0|168|2|287 --- State 1
+Process 2: D|2020|250|1770|1|822 --- State 1
+Process 3: C|2786|190|97|4|2499 --- State 2
+
+time 1086ms: Process A starts using the CPU
+Process 1: A|1373|0|168|2|287 --- State 2
+Process 2: D|2020|250|1770|1|822 --- State 1
+Process 3: C|2786|190|97|4|2499 --- State 2
+
+time 1373ms: Process A is finishes using the CPU
+Process 1: A|1377|0|168|2|287 --- State 4
+Process 2: D|2020|250|1770|1|822 --- State 1
+Process 3: C|2786|190|97|4|2499 --- State 2
+
+time 1377ms: Process A starts performing I/O
+time 1377ms: Process A finishes performing I/O
+Process 1: A|1545|0|168|1|287 --- State 1
+Process 2: D|2020|250|1770|1|822 --- State 1
+Process 3: C|2786|190|97|4|2499 --- State 2
+
+time 1545ms: Process A starts using the CPU
+Process 1: A|1832|0|168|1|287 --- State 2
+Process 2: D|2020|250|1770|1|822 --- State 1
+Process 3: C|2786|190|97|4|2499 --- State 2
+
+time 1832ms: Process A is finishes using the CPU
+Process 1: A|1836|0|168|1|287 --- State 4
+Process 2: D|2020|250|1770|1|822 --- State 1
+Process 3: C|2786|190|97|4|2499 --- State 2
+
+time 1836ms: Process A starts performing I/O
+time 1836ms: Process A finishes performing I/O
+Process 1: A|2004|0|168|0|287 --- State 1
+Process 2: D|2020|250|1770|1|822 --- State 1
+Process 3: C|2786|190|97|4|2499 --- State 2
+
+time 2004ms: Process A starts using the CPU
+Process 1: D|2020|250|1770|1|822 --- State 1
+Process 2: A|2291|0|168|0|287 --- State 2
+Process 3: C|2786|190|97|4|2499 --- State 2
+
+time 2020ms: Process D starts using the CPU
+Process 1: A|2291|0|168|0|287 --- State 2
+Process 2: C|2786|190|97|4|2499 --- State 2
+Process 3: D|2842|250|1770|1|822 --- State 2
+
+time 2291ms: Process A is terminated 
+Process 1: A|2295|0|168|0|287 --- State 4
+Process 2: C|2786|190|97|4|2499 --- State 2
+Process 3: D|2842|250|1770|1|822 --- State 2
 
 Process 1: C|2786|190|97|4|2499 --- State 2
 Process 2: D|2842|250|1770|1|822 --- State 2
-time 2275ms	n = 5
 
+time 2786ms: Process C is finishes using the CPU
+Process 1: C|2790|190|97|4|2499 --- State 4
+Process 2: D|2842|250|1770|1|822 --- State 2
+
+time 2790ms: Process C starts performing I/O
+time 2790ms: Process C finishes performing I/O
 Process 1: D|2842|250|1770|1|822 --- State 2
-Process 2: C|2883|190|97|3|2499 --- State 1
-time 2786ms	n = 5
+Process 2: C|2887|190|97|3|2499 --- State 1
 
-Process 1: C|2883|190|97|3|2499 --- State 1
-Process 2: D|4612|250|1770|0|822 --- State 1
-time 2842ms	n = 5
+time 2842ms: Process D is finishes using the CPU
+Process 1: D|2846|250|1770|1|822 --- State 4
+Process 2: C|2887|190|97|3|2499 --- State 1
 
-Process 1: D|4612|250|1770|0|822 --- State 1
-Process 2: C|5382|190|97|3|2499 --- State 2
-time 2883ms	n = 5
+time 2846ms: Process D starts performing I/O
+time 2846ms: Process D finishes performing I/O
+Process 1: C|2887|190|97|3|2499 --- State 1
+Process 2: D|4616|250|1770|0|822 --- State 1
 
-Process 1: C|5382|190|97|3|2499 --- State 2
-Process 2: D|5434|250|1770|0|822 --- State 2
-time 4612ms	n = 5
+time 2887ms: Process C starts using the CPU
+Process 1: D|4616|250|1770|0|822 --- State 1
+Process 2: C|5386|190|97|3|2499 --- State 2
 
-Process 1: D|5434|250|1770|0|822 --- State 2
-Process 2: C|5479|190|97|2|2499 --- State 1
-time 5382ms	n = 5
-D IS TERMINATED. n = 5
+time 4616ms: Process D starts using the CPU
+Process 1: C|5386|190|97|3|2499 --- State 2
+Process 2: D|5438|250|1770|0|822 --- State 2
 
-Process 1: C|5479|190|97|2|2499 --- State 1
-time 5434ms	n = 5
+time 5386ms: Process C is finishes using the CPU
+Process 1: C|5390|190|97|3|2499 --- State 4
+Process 2: D|5438|250|1770|0|822 --- State 2
 
-Process 1: C|7978|190|97|2|2499 --- State 2
-time 5479ms	n = 5
+time 5390ms: Process C starts performing I/O
+time 5390ms: Process C finishes performing I/O
+Process 1: D|5438|250|1770|0|822 --- State 2
+Process 2: C|5487|190|97|2|2499 --- State 1
 
-Process 1: C|8075|190|97|1|2499 --- State 1
-time 7978ms	n = 5
+time 5438ms: Process D is terminated 
+Process 1: D|5442|250|1770|0|822 --- State 4
+Process 2: C|5487|190|97|2|2499 --- State 1
 
-Process 1: C|10574|190|97|1|2499 --- State 2
-time 8075ms	n = 5
+Process 1: C|5487|190|97|2|2499 --- State 1
 
-Process 1: C|10671|190|97|0|2499 --- State 1
-time 10574ms	n = 5
+time 5487ms: Process C starts using the CPU
+Process 1: C|7986|190|97|2|2499 --- State 2
 
-Process 1: C|13170|190|97|0|2499 --- State 2
-time 10671ms	n = 5
-C IS TERMINATED. n = 5
+time 7986ms: Process C is finishes using the CPU
+Process 1: C|7990|190|97|2|2499 --- State 4
 
-time 13170ms	n = 5
+time 7990ms: Process C starts performing I/O
+time 7990ms: Process C finishes performing I/O
+Process 1: C|8087|190|97|1|2499 --- State 1
 
-Process 1: C|13170|190|97|0|2499 --- State 3
-Process 2: D|5434|250|1770|0|822 --- State 3
-Process 3: A|2275|0|168|0|287 --- State 3
-Process 4: E|2275|0|168|0|287 --- State 3
-Process 5: B|385|0|385|0|0 --- State 3
-time 13171ms	n = 5
+time 8087ms: Process C starts using the CPU
+Process 1: C|10586|190|97|1|2499 --- State 2
+
+time 10586ms: Process C is finishes using the CPU
+Process 1: C|10590|190|97|1|2499 --- State 4
+
+time 10590ms: Process C starts performing I/O
+time 10590ms: Process C finishes performing I/O
+Process 1: C|10687|190|97|0|2499 --- State 1
+
+time 10687ms: Process C starts using the CPU
+Process 1: C|13186|190|97|0|2499 --- State 2
+
+time 13186ms: Process C is terminated 
+Process 1: C|13190|190|97|0|2499 --- State 4
+
+time 13194ms: Simulator ended for FCFS

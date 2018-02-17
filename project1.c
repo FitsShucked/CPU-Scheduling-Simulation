@@ -210,7 +210,6 @@ void FCFS_alg(process** processes, int* n, int t_cs, int* context_swtiches, int*
 				}
 			#endif
 		}
-		if (real_t % 1000000 == 0) printf("time %dms:\n",real_t);
 		if (terminated == *n) break;
 		real_t++;
 	}
