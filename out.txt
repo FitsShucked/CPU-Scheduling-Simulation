@@ -1,0 +1,172 @@
+rr_add is 1
+
+time 0ms: Simulator started for FCFS
+time 0ms: Proccess A arrives
+time 0ms: Proccess B arrives
+time 0ms: Proccess E arrives
+time 190ms: Proccess C arrives
+time 250ms: Proccess D arrives
+
+array capacity = 8. procceses = 5.
+Process 1: A|0|0|168|5|287 --- State 0
+Process 2: B|0|0|385|1|0 --- State 0
+Process 3: E|0|0|168|5|287 --- State 0
+Process 4: C|190|190|97|5|2499 --- State 0
+Process 5: D|250|250|1770|2|822 --- State 0
+
+Process 1: A|0|0|168|5|287 --- State 0
+Process 2: E|0|0|168|5|287 --- State 0
+Process 3: B|0|0|385|1|0 --- State 0
+Process 4: C|190|190|97|5|2499 --- State 0
+Process 5: D|250|250|1770|2|822 --- State 0
+
+Process 1: A|168|0|168|4|287 --- State 1
+Process 2: E|168|0|168|4|287 --- State 1
+Process 3: C|190|190|97|5|2499 --- State 0
+Process 4: D|250|250|1770|2|822 --- State 0
+Process 5: B|385|0|385|0|0 --- State 1
+time 0ms	n = 5
+
+Process 1: C|190|190|97|5|2499 --- State 0
+Process 2: D|250|250|1770|2|822 --- State 0
+Process 3: B|385|0|385|0|0 --- State 1
+Process 4: A|455|0|168|4|287 --- State 2
+Process 5: E|455|0|168|4|287 --- State 2
+time 168ms	n = 5
+
+Process 1: D|250|250|1770|2|822 --- State 0
+Process 2: C|287|190|97|4|2499 --- State 1
+Process 3: B|385|0|385|0|0 --- State 1
+Process 4: A|455|0|168|4|287 --- State 2
+Process 5: E|455|0|168|4|287 --- State 2
+time 190ms	n = 5
+
+Process 1: C|287|190|97|4|2499 --- State 1
+Process 2: B|385|0|385|0|0 --- State 1
+Process 3: A|455|0|168|4|287 --- State 2
+Process 4: E|455|0|168|4|287 --- State 2
+Process 5: D|2020|250|1770|1|822 --- State 1
+time 250ms	n = 5
+
+Process 1: B|385|0|385|0|0 --- State 1
+Process 2: A|455|0|168|4|287 --- State 2
+Process 3: E|455|0|168|4|287 --- State 2
+Process 4: D|2020|250|1770|1|822 --- State 1
+Process 5: C|2786|190|97|4|2499 --- State 2
+time 287ms	n = 5
+B IS TERMINATED. n = 5
+
+Process 1: A|455|0|168|4|287 --- State 2
+Process 2: E|455|0|168|4|287 --- State 2
+Process 3: D|2020|250|1770|1|822 --- State 1
+Process 4: C|2786|190|97|4|2499 --- State 2
+time 385ms	n = 5
+
+Process 1: A|623|0|168|3|287 --- State 1
+Process 2: E|623|0|168|3|287 --- State 1
+Process 3: D|2020|250|1770|1|822 --- State 1
+Process 4: C|2786|190|97|4|2499 --- State 2
+time 455ms	n = 5
+
+Process 1: A|910|0|168|3|287 --- State 2
+Process 2: E|910|0|168|3|287 --- State 2
+Process 3: D|2020|250|1770|1|822 --- State 1
+Process 4: C|2786|190|97|4|2499 --- State 2
+time 623ms	n = 5
+
+Process 1: A|1078|0|168|2|287 --- State 1
+Process 2: E|1078|0|168|2|287 --- State 1
+Process 3: D|2020|250|1770|1|822 --- State 1
+Process 4: C|2786|190|97|4|2499 --- State 2
+time 910ms	n = 5
+
+Process 1: A|1365|0|168|2|287 --- State 2
+Process 2: E|1365|0|168|2|287 --- State 2
+Process 3: D|2020|250|1770|1|822 --- State 1
+Process 4: C|2786|190|97|4|2499 --- State 2
+time 1078ms	n = 5
+
+Process 1: A|1533|0|168|1|287 --- State 1
+Process 2: E|1533|0|168|1|287 --- State 1
+Process 3: D|2020|250|1770|1|822 --- State 1
+Process 4: C|2786|190|97|4|2499 --- State 2
+time 1365ms	n = 5
+
+Process 1: A|1820|0|168|1|287 --- State 2
+Process 2: E|1820|0|168|1|287 --- State 2
+Process 3: D|2020|250|1770|1|822 --- State 1
+Process 4: C|2786|190|97|4|2499 --- State 2
+time 1533ms	n = 5
+
+Process 1: A|1988|0|168|0|287 --- State 1
+Process 2: E|1988|0|168|0|287 --- State 1
+Process 3: D|2020|250|1770|1|822 --- State 1
+Process 4: C|2786|190|97|4|2499 --- State 2
+time 1820ms	n = 5
+
+Process 1: D|2020|250|1770|1|822 --- State 1
+Process 2: A|2275|0|168|0|287 --- State 2
+Process 3: E|2275|0|168|0|287 --- State 2
+Process 4: C|2786|190|97|4|2499 --- State 2
+time 1988ms	n = 5
+
+Process 1: A|2275|0|168|0|287 --- State 2
+Process 2: E|2275|0|168|0|287 --- State 2
+Process 3: C|2786|190|97|4|2499 --- State 2
+Process 4: D|2842|250|1770|1|822 --- State 2
+time 2020ms	n = 5
+A IS TERMINATED. n = 5
+E IS TERMINATED. n = 5
+
+Process 1: C|2786|190|97|4|2499 --- State 2
+Process 2: D|2842|250|1770|1|822 --- State 2
+time 2275ms	n = 5
+
+Process 1: D|2842|250|1770|1|822 --- State 2
+Process 2: C|2883|190|97|3|2499 --- State 1
+time 2786ms	n = 5
+
+Process 1: C|2883|190|97|3|2499 --- State 1
+Process 2: D|4612|250|1770|0|822 --- State 1
+time 2842ms	n = 5
+
+Process 1: D|4612|250|1770|0|822 --- State 1
+Process 2: C|5382|190|97|3|2499 --- State 2
+time 2883ms	n = 5
+
+Process 1: C|5382|190|97|3|2499 --- State 2
+Process 2: D|5434|250|1770|0|822 --- State 2
+time 4612ms	n = 5
+
+Process 1: D|5434|250|1770|0|822 --- State 2
+Process 2: C|5479|190|97|2|2499 --- State 1
+time 5382ms	n = 5
+D IS TERMINATED. n = 5
+
+Process 1: C|5479|190|97|2|2499 --- State 1
+time 5434ms	n = 5
+
+Process 1: C|7978|190|97|2|2499 --- State 2
+time 5479ms	n = 5
+
+Process 1: C|8075|190|97|1|2499 --- State 1
+time 7978ms	n = 5
+
+Process 1: C|10574|190|97|1|2499 --- State 2
+time 8075ms	n = 5
+
+Process 1: C|10671|190|97|0|2499 --- State 1
+time 10574ms	n = 5
+
+Process 1: C|13170|190|97|0|2499 --- State 2
+time 10671ms	n = 5
+C IS TERMINATED. n = 5
+
+time 13170ms	n = 5
+
+Process 1: C|13170|190|97|0|2499 --- State 3
+Process 2: D|5434|250|1770|0|822 --- State 3
+Process 3: A|2275|0|168|0|287 --- State 3
+Process 4: E|2275|0|168|0|287 --- State 3
+Process 5: B|385|0|385|0|0 --- State 3
+time 13171ms	n = 5
