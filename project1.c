@@ -12,13 +12,15 @@
 #define CS_BRING 5
 
 typedef struct process { // struct for storing the data of a process
-	char proc_id;
-	int update_time;
-	int initial_arrive_time;
-	int cpu_burst_time;
-	int num_bursts;
-	int io_time;
-	int state;
+	char proc_id; // process id 
+	int update_time; // time when state is completed
+	int wait_start_time; // time when wait time has begun counting
+	int turnaround_start_time; // time when turnaround time has begun counting
+	int initial_arrive_time; // time when process arrices
+	int cpu_burst_time; // time process wants to spend in CPU once
+	int num_bursts; // number of times process wants to be in the CPU
+	int io_time; // time process waits after being in CPU
+	int state; // state process is in
 } process;
 
 void printState(int s) { // prints the state a process is in for debugging print function
@@ -82,10 +84,11 @@ void error() { // outputs error
 	exit(1);
 }
 
-void createQueue(process*** queue, int n) {
-	*queue = (process**)calloc(n,sizeof(process*));
+process** createQueue(int n) {
+	process** queue = (process**)calloc(n,sizeof(process*));
 	int i;
-	for (i = 0; i < n; i++) (*queue)[i] = NULL;
+	for (i = 0; i < n; i++) queue[i] = NULL;
+	return queue;
 }
 
 void freeQueue(process*** queue, int n) {
@@ -147,16 +150,16 @@ void updateQueue(process*** queue, int queue_capacity) { // moves elements in qu
 	}
 }
 
-void fileParser(process** processes, int* n, const char** arg1) { // parses file into process struct
+process* fileParser(int* n, const char** arg1) { // parses file into process struct
 	FILE* inputFile = NULL;
 	inputFile = fopen(*arg1,"r");
 	if (inputFile == NULL) error();
-	*processes = (process*)calloc(26,sizeof(process));
+	process* processes = (process*)calloc(26,sizeof(process));
 	char buffer[100];
 	memset(buffer,'\0',100);
 	while (fgets(buffer,100,inputFile) != NULL) { // reads line from file, buffering 100 characters
 		if (buffer[0] != '#' && buffer[0] != ' ' && buffer[0] != '\n' && buffer[1] == '|') { // checks to see if line can be parsed
-			(*processes)[*n].proc_id = buffer[0];
+			processes[*n].proc_id = buffer[0];
 			char buffer2[100];
 			memset(buffer2,'\0',100);
 			int i = 2, j;
@@ -164,9 +167,11 @@ void fileParser(process** processes, int* n, const char** arg1) { // parses file
 				if (buffer[i] != '|') buffer2[j] = buffer[i];
 				else {
 					i++;
-					(*processes)[*n].initial_arrive_time = atoi(buffer2);
-					(*processes)[*n].update_time = 0;
-					(*processes)[*n].state = ARRIVING;
+					processes[*n].initial_arrive_time = atoi(buffer2);
+					processes[*n].update_time = 0;
+					processes[*n].wait_start_time = 0;
+					processes[*n].turnaround_start_time = 0;
+					processes[*n].state = ARRIVING;
 					break;
 				} 
 			}
@@ -175,7 +180,7 @@ void fileParser(process** processes, int* n, const char** arg1) { // parses file
 				if (buffer[i] != '|') buffer2[j] = buffer[i];
 				else {
 					i++;
-					(*processes)[*n].cpu_burst_time = atoi(buffer2);
+					processes[*n].cpu_burst_time = atoi(buffer2);
 					break;
 				} 
 			}
@@ -184,7 +189,7 @@ void fileParser(process** processes, int* n, const char** arg1) { // parses file
 				if (buffer[i] != '|') buffer2[j] = buffer[i];
 				else {
 					i++;
-					(*processes)[*n].num_bursts = atoi(buffer2);
+					processes[*n].num_bursts = atoi(buffer2);
 					break;
 				} 
 			}
@@ -193,7 +198,7 @@ void fileParser(process** processes, int* n, const char** arg1) { // parses file
 				if (buffer[i] != '\0') buffer2[j] = buffer[i];
 				else {
 					i++;
-					(*processes)[*n].io_time = atoi(buffer2);
+					processes[*n].io_time = atoi(buffer2);
 					break;
 				} 
 			}
@@ -201,20 +206,19 @@ void fileParser(process** processes, int* n, const char** arg1) { // parses file
 			(*n)++;
 		}
 	}
-	*processes = realloc(*processes, (*n) * (sizeof(process)));
+	processes = realloc(processes, (*n) * (sizeof(process)));
 	#ifdef DEBUG_MODE
 		printf("\nprocceses = %d\n",*n);
 		debugPrintProcesses(processes,*n);
 	#endif
 	fclose(inputFile);
+	return processes;
 }
 
-void FCFS_alg(process** processes, int n, int t_cs, int* context_swtiches, int* preemptions) { // First Come First Server Alg
-	int i, real_t = 0, change = 0, terminated = 0, context_switching = 0, ready_capacity = 0;
-	process** ready_queue = NULL;
-	process** wait_array = NULL;
-	createQueue(&ready_queue,n);
-	createQueue(&wait_array,n);
+void FCFS_alg(process** processes, int n, int t_cs, float* sum_wait_time, float* sum_turnaround_time, int* context_swtiches) { // First Come First Serve Algorithm
+	int i, real_t = 0, change = 0, terminated = 0, context_switching = 0, ready_capacity = 0, wait_capacity = 0;
+	process** ready_queue = createQueue(n);
+	process** wait_array = createQueue(n);
 	process* CPU = NULL;
    printf("time %dms: Simulator started for FCFS ",real_t);
    fflush(stdout);
@@ -236,7 +240,6 @@ void FCFS_alg(process** processes, int n, int t_cs, int* context_swtiches, int* 
 				printQueue(&ready_queue,ready_capacity);
 				CPU->update_time += (t_cs / 2);
 				CPU->state = CS_REMOVE;
-				(*context_swtiches)++;
 				context_switching = 1;
 				change = 1;
 			}
@@ -246,7 +249,13 @@ void FCFS_alg(process** processes, int n, int t_cs, int* context_swtiches, int* 
 					int pos = addProcess(&wait_array,*CPU,n);
 					wait_array[pos]->update_time += wait_array[pos]->io_time;
 					wait_array[pos]->state = BLOCKED;
+					wait_capacity++;
 				}
+				*sum_turnaround_time += real_t - CPU->turnaround_start_time;
+				#ifdef DBEUG_MODE
+					printf("\nturnaround time for %c: %d\n\n", CPU->proc_id, real_t - CPU->turnaround_start_time);
+					fflush(stdout);
+				#endif
 				context_switching = 0;
 				free(CPU);
 				CPU = NULL;
@@ -256,15 +265,19 @@ void FCFS_alg(process** processes, int n, int t_cs, int* context_swtiches, int* 
 				int pos = addProcess(&ready_queue,*(wait_array[i]),n);
 				free(wait_array[i]);
 				wait_array[i] = NULL;
+				ready_queue[pos]->turnaround_start_time = real_t;
+				ready_queue[pos]->wait_start_time = real_t;
 				ready_queue[pos]->update_time = real_t;
 				ready_queue[pos]->state = READY;
 				ready_capacity++;
+				wait_capacity--;
 				printf("time %dms: Process %c completed I/O; added to ready queue ",real_t,ready_queue[pos]->proc_id);
 				fflush(stdout);
 				printQueue(&ready_queue,ready_capacity);
 				change = 1;
 			}
 			updateQueue(&ready_queue,n);
+			updateQueue(&wait_array,n);
 		}
 		for (i = 0; i < n - terminated; i++) { // loop for processes arriving and entering the CPU
 			if (ready_queue[i] != NULL && ready_queue[i]->update_time == real_t && ready_queue[i]->state == CS_BRING) { // proccess finished context switching into the CPU
@@ -285,6 +298,8 @@ void FCFS_alg(process** processes, int n, int t_cs, int* context_swtiches, int* 
 			}
 			if ((*processes)[i].initial_arrive_time == real_t && (*processes)[i].state == ARRIVING) { // process has arrived
 				int pos = addProcess(&ready_queue,(*processes)[i],n);
+				ready_queue[pos]->turnaround_start_time = real_t;
+				ready_queue[pos]->wait_start_time = real_t;
 				ready_queue[pos]->update_time = real_t;
 				ready_queue[pos]->state = READY;
 				ready_capacity++;
@@ -294,6 +309,11 @@ void FCFS_alg(process** processes, int n, int t_cs, int* context_swtiches, int* 
 				change = 1;
 			}
 			if (CPU == NULL && context_switching == 0 && ready_queue[i] != NULL && ready_queue[i]->state == READY) { // process is able to use the CPU
+				*sum_wait_time += real_t - ready_queue[i]->wait_start_time;
+				#ifdef DEBUG_MODE
+					printf("\nwait time for %c: %d\n\n", ready_queue[i]->proc_id, real_t - ready_queue[i]->wait_start_time);
+					fflush(stdout);
+				#endif
 				(*context_swtiches)++;
 				context_switching = 1;
 				ready_queue[i]->state = CS_BRING;
@@ -302,11 +322,11 @@ void FCFS_alg(process** processes, int n, int t_cs, int* context_swtiches, int* 
 			}
 			updateQueue(&ready_queue,n);
 		}
-		if (change) {
+		if (change) { // if a process has been updated
 			change = 0;
 			qsort(ready_queue,ready_capacity,sizeof(process*),comparator); // clears ties
 			#ifdef DEBUG_MODE
-				if (terminated < n) {
+				if (terminated < n) { // debug prints of CPU and queues
 					printf("\n--- Printing at time %dms\n",real_t);
 					fflush(stdout);
 					if (CPU != NULL) {
@@ -327,26 +347,67 @@ void FCFS_alg(process** processes, int n, int t_cs, int* context_swtiches, int* 
 						printf("Empty Ready Queue\n");
 						fflush(stdout);
 					}
+					if (wait_capacity > 0) {
+						printf("Printing Wait Queue\n");
+						fflush(stdout);
+						debugPrintQueue(&wait_array,wait_capacity);
+					} else {
+						printf("Empty Wait Queue\n");
+						fflush(stdout);
+					}
 					printf("--------------------------\n\n");
 				   fflush(stdout);
 				}
 			#endif
 		}
-		if (terminated == n) break;
+		if (terminated == n) break; // ends simulation when all processes have been terminated
 		real_t++;
 	}
 	printf("time %dms: Simulator ended for FCFS\n",real_t);
 	fflush(stdout);
+	if (CPU != NULL) free(CPU);
 	freeQueue(&ready_queue,n);
 	freeQueue(&wait_array,n);
 }
 
-void SRT() {
+void SRT() { // Shortest Remaining Time Algorithm
 	
 }
 
-void RR(int rr_add) {
+void RR(int rr_add) { // Round Robin Algorithm
 	
+}
+
+void fileOutput(process** processes, int n, float** sum_wait_time, float** sum_turnaround_time, int** context_switches, int** preemptions, char const** path) {
+	FILE* wFile = fopen(*path,"w");
+	if (wFile == NULL) {
+		free(*processes);
+		free(*sum_wait_time);
+		free(*sum_turnaround_time);
+		free(*context_switches);
+		free(*preemptions);
+		error();
+	}
+	int i, cpu_burst_sum = 0, bursts = 0;
+	for (i = 0; i < n; i++) {
+		cpu_burst_sum += (*processes)[i].cpu_burst_time * (*processes)[i].num_bursts;
+		bursts += (*processes)[i].num_bursts;
+	}
+	#ifdef DEBUG_MODE
+   	printf("sum wait time: %f\nsum turnaround time: %f\nnumber of bursts: %d\n",(*sum_wait_time)[0],(*sum_turnaround_time)[0],bursts);
+		fflush(stdout);
+	#endif
+	for (i = 0; i < 3; i++) {
+		if (i == 0) fprintf(wFile,"Algorithm FCFS\n");
+		else if (i == 1) fprintf(wFile,"Algorithm SRT\n");
+		else fprintf(wFile,"Algorithm RR\n");
+		fprintf(wFile,"-- average CPU burst time: %.2f ms\n",(float) cpu_burst_sum / bursts);
+		fprintf(wFile,"-- average wait time: %.2f ms\n",(*sum_wait_time)[i] / bursts);
+		fprintf(wFile,"-- average turnaround time: %.2f ms\n",(*sum_turnaround_time)[i] / bursts);
+		fprintf(wFile,"-- total number of context switches: %d\n",(*context_switches)[i]);
+		fprintf(wFile,"-- total number of preemptions: %d\n",(*preemptions)[i]);
+	}
+	fclose(wFile);
 }
 
 int main(int argc, char const *argv[]) {
@@ -354,25 +415,29 @@ int main(int argc, char const *argv[]) {
 		fprintf(stderr, "ERROR: Invalid arugment(s)\nUSAGE: ./a.out <input-file> <stats-output-file> [<rr-add>]\n");
 		exit(EXIT_FAILURE);
    }
-   
    int n = 0; // the number of processes to simulate
    int t_cs = 8; // context switch time (in milliseconds)
-   // int t_slive = 80; // time slice for RR algorithm (in milliseconds)
+   // int t_slice = 80; // time slice for RR algorithm (in milliseconds)
    int rr_add = END;  // determines whether process are added to beginning or end of RR ready queue
    if (argc > 3 && strcmp(argv[3],"BEGINNING") == 0) rr_add = BEGINNING;
    #ifdef DEBUG_MODE
-   	printf("rr_add is %d\n\n",rr_add);
+   	if (rr_add == END) printf("rr_add is END\n\n");
+   	else printf("rr_add is BEGINNING\n\n",rr_add);
    	fflush(stdout);
    #endif
-   
-   process* processes = NULL;
-   fileParser(&processes, &n, &argv[1]);
+   process* processes = fileParser(&n, &argv[1]);
+   float* sum_wait_time = (float*)calloc(n,sizeof(float));
+   float* sum_turnaround_time = (float*)calloc(n,sizeof(float));
    int* context_switches = (int*)calloc(n,sizeof(int));
    int* preemptions = (int*)calloc(n,sizeof(int));
-   FCFS_alg(&processes,n,t_cs,&context_switches[0],&preemptions[0]);
+   preemptions[0] = 0; // FCFS is a non-preemptive algorithm
+   FCFS_alg(&processes,n,t_cs,&sum_wait_time[0],&sum_turnaround_time[0],&context_switches[0]);
    SRT();
    RR(rr_add);
+   fileOutput(&processes,n,&sum_wait_time,&sum_turnaround_time,&context_switches,&preemptions,&argv[2]);
    free(processes);
+   free(sum_wait_time);
+   free(sum_turnaround_time);
    free(context_switches);
    free(preemptions);
 	return EXIT_SUCCESS;
