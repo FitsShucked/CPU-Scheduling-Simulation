@@ -1,7 +1,6 @@
 rr_add is END
 
-
-procceses = 4
+processes parsed: 4
 A|0    |168  |5    |287  
 B|0    |385  |1    |0    
 C|190  |97   |5    |2499 
@@ -10,7 +9,7 @@ D|250  |1770 |2    |822
 time 0ms: Simulator started for FCFS [Q <empty>]
 time 0ms: Process A arrived and added to ready queue [Q A]
 
-wait time for A: 0
+wait time for A: 0ms
 
 time 0ms: Process B arrived and added to ready queue [Q A B]
 
@@ -44,7 +43,7 @@ Empty Wait Queue
 --------------------------
 
 
-wait time for B: 176
+wait time for B: 176ms
 
 
 --- Printing at time 176ms
@@ -113,7 +112,7 @@ Empty Wait Queue
 --------------------------
 
 
-wait time for C: 379
+wait time for C: 379ms
 
 
 --- Printing at time 569ms
@@ -149,7 +148,7 @@ Empty Wait Queue
 --------------------------
 
 
-wait time for D: 424
+wait time for D: 424ms
 
 
 --- Printing at time 674ms
@@ -185,7 +184,7 @@ C|190  |97   |4    |2499   State: BLOCKED     Update at time 3173ms
 --------------------------
 
 
-wait time for A: 1989
+wait time for A: 1989ms
 
 
 --- Printing at time 2452ms
@@ -232,7 +231,7 @@ A|0    |168  |3    |287    State: BLOCKED     Update at time 2915ms
 
 time 2915ms: Process A completed I/O; added to ready queue [Q A]
 
-wait time for A: 0
+wait time for A: 0ms
 
 
 --- Printing at time 2915ms
@@ -279,7 +278,7 @@ A|0    |168  |2    |287    State: BLOCKED     Update at time 3378ms
 
 time 3173ms: Process C completed I/O; added to ready queue [Q C]
 
-wait time for C: 0
+wait time for C: 0ms
 
 
 --- Printing at time 3173ms
@@ -316,7 +315,7 @@ A|0    |168  |2    |287    State: BLOCKED     Update at time 3378ms
 --------------------------
 
 
-wait time for D: 4
+wait time for D: 4ms
 
 
 --- Printing at time 3278ms
@@ -362,7 +361,7 @@ C|190  |97   |3    |2499   State: BLOCKED     Update at time 5777ms
 --------------------------
 
 
-wait time for A: 1678
+wait time for A: 1678ms
 
 
 --- Printing at time 5056ms
@@ -405,7 +404,7 @@ A|0    |168  |1    |287    State: BLOCKED     Update at time 5519ms
 
 time 5519ms: Process A completed I/O; added to ready queue [Q A]
 
-wait time for A: 0
+wait time for A: 0ms
 
 
 --- Printing at time 5519ms
@@ -446,7 +445,7 @@ C|190  |97   |3    |2499   State: BLOCKED     Update at time 5777ms
 
 time 5777ms: Process C completed I/O; added to ready queue [Q C]
 
-wait time for C: 0
+wait time for C: 0ms
 
 
 --- Printing at time 5777ms
@@ -485,7 +484,7 @@ C|190  |97   |2    |2499   State: BLOCKED     Update at time 8381ms
 
 time 8381ms: Process C completed I/O; added to ready queue [Q C]
 
-wait time for C: 0
+wait time for C: 0ms
 
 
 --- Printing at time 8381ms
@@ -524,7 +523,7 @@ C|190  |97   |1    |2499   State: BLOCKED     Update at time 10985ms
 
 time 10985ms: Process C completed I/O; added to ready queue [Q C]
 
-wait time for C: 0
+wait time for C: 0ms
 
 
 --- Printing at time 10985ms

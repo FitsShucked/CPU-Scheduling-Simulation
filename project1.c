@@ -81,7 +81,7 @@ int comparator(const void* a, const void* b) { // comparator to handle ties
 
 void error() { // outputs error
 	perror("ERROR");
-	exit(1);
+	exit(EXIT_FAILURE);
 }
 
 process** createQueue(int n) {
@@ -208,14 +208,14 @@ process* fileParser(int* n, const char** arg1) { // parses file into process str
 	}
 	processes = realloc(processes, (*n) * (sizeof(process)));
 	#ifdef DEBUG_MODE
-		printf("\nprocceses = %d\n",*n);
-		debugPrintProcesses(processes,*n);
+		printf("\nprocesses parsed: %d\n",*n);
+		debugPrintProcesses(&processes,*n);
 	#endif
 	fclose(inputFile);
 	return processes;
 }
 
-void FCFS_alg(process** processes, int n, int t_cs, float* sum_wait_time, float* sum_turnaround_time, int* context_swtiches) { // First Come First Serve Algorithm
+void FCFS(process** processes, int n, int t_cs, float* sum_wait_time, float* sum_turnaround_time, int* context_swtiches) { // First Come First Serve Algorithm
 	int i, real_t = 0, change = 0, terminated = 0, context_switching = 0, ready_capacity = 0, wait_capacity = 0;
 	process** ready_queue = createQueue(n);
 	process** wait_array = createQueue(n);
@@ -253,7 +253,7 @@ void FCFS_alg(process** processes, int n, int t_cs, float* sum_wait_time, float*
 				}
 				*sum_turnaround_time += real_t - CPU->turnaround_start_time;
 				#ifdef DBEUG_MODE
-					printf("\nturnaround time for %c: %d\n\n", CPU->proc_id, real_t - CPU->turnaround_start_time);
+					printf("\nturnaround time for %c: %dms\n\n", CPU->proc_id, real_t - CPU->turnaround_start_time);
 					fflush(stdout);
 				#endif
 				context_switching = 0;
@@ -311,7 +311,7 @@ void FCFS_alg(process** processes, int n, int t_cs, float* sum_wait_time, float*
 			if (CPU == NULL && context_switching == 0 && ready_queue[i] != NULL && ready_queue[i]->state == READY) { // process is able to use the CPU
 				*sum_wait_time += real_t - ready_queue[i]->wait_start_time;
 				#ifdef DEBUG_MODE
-					printf("\nwait time for %c: %d\n\n", ready_queue[i]->proc_id, real_t - ready_queue[i]->wait_start_time);
+					printf("\nwait time for %c: %dms\n\n", ready_queue[i]->proc_id, real_t - ready_queue[i]->wait_start_time);
 					fflush(stdout);
 				#endif
 				(*context_swtiches)++;
@@ -374,7 +374,7 @@ void SRT() { // Shortest Remaining Time Algorithm
 	
 }
 
-void RR(int rr_add) { // Round Robin Algorithm
+void RR(int t_slice, int rr_add) { // Round Robin Algorithm
 	
 }
 
@@ -417,12 +417,12 @@ int main(int argc, char const *argv[]) {
    }
    int n = 0; // the number of processes to simulate
    int t_cs = 8; // context switch time (in milliseconds)
-   // int t_slice = 80; // time slice for RR algorithm (in milliseconds)
+   int t_slice = 80; // time slice for RR algorithm (in milliseconds)
    int rr_add = END;  // determines whether process are added to beginning or end of RR ready queue
    if (argc > 3 && strcmp(argv[3],"BEGINNING") == 0) rr_add = BEGINNING;
    #ifdef DEBUG_MODE
-   	if (rr_add == END) printf("rr_add is END\n\n");
-   	else printf("rr_add is BEGINNING\n\n",rr_add);
+   	if (rr_add == END) printf("rr_add is END\n");
+   	else printf("rr_add is BEGINNING\n");
    	fflush(stdout);
    #endif
    process* processes = fileParser(&n, &argv[1]);
@@ -431,9 +431,9 @@ int main(int argc, char const *argv[]) {
    int* context_switches = (int*)calloc(n,sizeof(int));
    int* preemptions = (int*)calloc(n,sizeof(int));
    preemptions[0] = 0; // FCFS is a non-preemptive algorithm
-   FCFS_alg(&processes,n,t_cs,&sum_wait_time[0],&sum_turnaround_time[0],&context_switches[0]);
+   FCFS(&processes,n,t_cs,&sum_wait_time[0],&sum_turnaround_time[0],&context_switches[0]);
    SRT();
-   RR(rr_add);
+   RR(t_slice, rr_add);
    fileOutput(&processes,n,&sum_wait_time,&sum_turnaround_time,&context_switches,&preemptions,&argv[2]);
    free(processes);
    free(sum_wait_time);
