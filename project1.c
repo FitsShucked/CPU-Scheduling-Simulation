@@ -64,18 +64,7 @@ int comparator(const void* a, const void* b) { // comparator to handle ties
 	process* p = *((process**) a);
 	process* q = *((process**) b);
 	int diff = p->update_time - q->update_time;
-	if (diff == 0) {
-		diff = p->cpu_burst_time - q->cpu_burst_time;
-		if (diff == 0) {
-			diff = p->io_time - q->io_time;
-			if (diff == 0) {
-				diff = p->initial_arrive_time - q->initial_arrive_time;
-				if (diff == 0) {
-					return p->proc_id - q->proc_id;
-				}
-			}
-		}
-	}
+	if (diff == 0) return p->proc_id - q->proc_id;
 	return diff;
 }
 
@@ -280,15 +269,9 @@ void FCFS(process** processes, int n, int t_cs, float* sum_wait_time, float* sum
 			updateQueue(&wait_array,n);
 		}
 		for (i = 0; i < n - terminated; i++) { // loop for processes arriving and entering the CPU
-			if (ready_queue[i] != NULL && ready_queue[i]->update_time == real_t && ready_queue[i]->state == CS_BRING) { // proccess finished context switching into the CPU
-				printf("time %dms: Process %c started using the CPU ",real_t,ready_queue[i]->proc_id);
+			if (CPU != NULL && CPU->update_time == real_t && CPU->state == CS_BRING) { // proccess finished context switching into the CPU
+				printf("time %dms: Process %c started using the CPU ",real_t,CPU->proc_id);
 				fflush(stdout);
-				CPU = (process*)calloc(1,sizeof(process));
-				memcpy(CPU,ready_queue[i],sizeof(process));
-				free(ready_queue[i]);
-				ready_queue[i] = NULL;
-				ready_capacity--;
-				updateQueue(&ready_queue,n);
 				printQueue(&ready_queue,ready_capacity);
 				CPU->update_time += CPU->cpu_burst_time;
 				CPU->state = RUNNING;
@@ -296,7 +279,15 @@ void FCFS(process** processes, int n, int t_cs, float* sum_wait_time, float* sum
 				context_switching = 0;
 				change = 1;
 			}
-			if ((*processes)[i].initial_arrive_time == real_t && (*processes)[i].state == ARRIVING) { // process has arrived
+			if (ready_queue[i] != NULL && ready_queue[i]->update_time - (t_cs / 2) + 1 == real_t && ready_queue[i]->state == CS_BRING) { // process moves out of the ready queue, context switching into the CPU
+				CPU = (process*)calloc(1,sizeof(process));
+				memcpy(CPU,ready_queue[i],sizeof(process));
+				free(ready_queue[i]);
+				ready_queue[i] = NULL;
+				ready_capacity--;
+				updateQueue(&ready_queue,n);
+			}
+			if ((*processes)[i].initial_arrive_time == real_t && (*processes)[i].state == ARRIVING) { // process has arrived 
 				int pos = addProcess(&ready_queue,(*processes)[i],n);
 				ready_queue[pos]->turnaround_start_time = real_t;
 				ready_queue[pos]->wait_start_time = real_t;
@@ -308,7 +299,7 @@ void FCFS(process** processes, int n, int t_cs, float* sum_wait_time, float* sum
 				printQueue(&ready_queue,ready_capacity);
 				change = 1;
 			}
-			if (CPU == NULL && context_switching == 0 && ready_queue[i] != NULL && ready_queue[i]->state == READY) { // process is able to use the CPU
+			if (CPU == NULL && context_switching == 0 && ready_queue[i] != NULL && ready_queue[i]->state == READY) { // process is able to use the CPU, beginning to context switch
 				*sum_wait_time += real_t - ready_queue[i]->wait_start_time;
 				#ifdef DEBUG_MODE
 					printf("\nwait time for %c: %dms\n\n", ready_queue[i]->proc_id, real_t - ready_queue[i]->wait_start_time);
@@ -326,7 +317,7 @@ void FCFS(process** processes, int n, int t_cs, float* sum_wait_time, float* sum
 			change = 0;
 			qsort(ready_queue,ready_capacity,sizeof(process*),comparator); // clears ties
 			#ifdef DEBUG_MODE
-				if (terminated < n) { // debug prints of CPU and queues
+				if (terminated < n) { // debug prints of CPU, ready queue, and wait array
 					printf("\n--- Printing at time %dms\n",real_t);
 					fflush(stdout);
 					if (CPU != NULL) {
@@ -348,11 +339,11 @@ void FCFS(process** processes, int n, int t_cs, float* sum_wait_time, float* sum
 						fflush(stdout);
 					}
 					if (wait_capacity > 0) {
-						printf("Printing Wait Queue\n");
+						printf("Printing Wait Array\n");
 						fflush(stdout);
 						debugPrintQueue(&wait_array,wait_capacity);
 					} else {
-						printf("Empty Wait Queue\n");
+						printf("Empty Wait Array\n");
 						fflush(stdout);
 					}
 					printf("--------------------------\n\n");
