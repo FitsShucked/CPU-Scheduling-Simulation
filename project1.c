@@ -252,7 +252,7 @@ void FCFS(process **processes, int n, int t_cs, float *sum_wait_time, float *sum
                     wait_capacity++;
                 }
                 *sum_turnaround_time += real_t - CPU->turnaround_start_time;
-#ifdef DBEUG_MODE
+#ifdef DEBUG_MODE
                 printf("\nturnaround time for %c: %dms\n\n", CPU->proc_id, real_t - CPU->turnaround_start_time);
                 fflush(stdout);
 #endif
@@ -402,31 +402,6 @@ void RR(process **processes, int n, int t_cs, float *sum_wait_time, float *sum_t
         for (int i = 0; i < n - terminated; ++i) {
             // loop for processes arriving and entering the CPU
 
-            if (context_switching && CPU != NULL && CPU->update_time == real_t &&
-                CPU->state == CS_BRING) {
-                // proccess finished context switching into the CPU
-                printf("time %dms: Process %c started using the CPU ", real_t, CPU->proc_id);
-                fflush(stdout);
-                printQueue(&ready_queue, ready_capacity);
-                CPU->update_time += CPU->cpu_burst_time;
-                CPU->state = RUNNING;
-                (CPU->num_bursts)--;
-                context_switching = false;
-                change = true;
-            }
-
-            if (ready_queue[i] != NULL && ready_queue[i]->update_time - (t_cs / 2) + 1 == real_t &&
-                ready_queue[i]->state == CS_BRING) {
-                // process moves out of the ready queue, context switching into the CPU
-                CPU = (process *) calloc(1, sizeof(process));
-                memcpy(CPU, ready_queue[i], sizeof(process));
-                free(ready_queue[i]);
-                ready_queue[i] = NULL;
-                ready_capacity--;
-                updateQueue(&ready_queue, n);
-            }
-
-
             if ((*processes)[i].initial_arrive_time == real_t &&
                 (*processes)[i].state == ARRIVING) {
                 // process has arrived
@@ -457,6 +432,29 @@ void RR(process **processes, int n, int t_cs, float *sum_wait_time, float *sum_t
                 ready_queue[i]->state = CS_BRING;
                 ready_queue[i]->update_time = real_t + (t_cs / 2);
                 change = true;
+            }
+            if (context_switching && CPU != NULL && CPU->update_time == real_t &&
+                CPU->state == CS_BRING) {
+                // proccess finished context switching into the CPU
+                printf("time %dms: Process %c started using the CPU ", real_t, CPU->proc_id);
+                fflush(stdout);
+                printQueue(&ready_queue, ready_capacity);
+                CPU->update_time += CPU->cpu_burst_time;
+                CPU->state = RUNNING;
+                (CPU->num_bursts)--;
+                context_switching = false;
+                change = true;
+            }
+
+            if (ready_queue[i] != NULL && ready_queue[i]->update_time - (t_cs / 2) == real_t &&
+                ready_queue[i]->state == CS_BRING) {
+                // process moves out of the ready queue, context switching into the CPU
+                CPU = (process *) calloc(1, sizeof(process));
+                memcpy(CPU, ready_queue[i], sizeof(process));
+                free(ready_queue[i]);
+                ready_queue[i] = NULL;
+                ready_capacity--;
+                updateQueue(&ready_queue, n);
             }
 
             updateQueue(&ready_queue, n);
