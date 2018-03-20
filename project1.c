@@ -206,7 +206,7 @@ process* fileParser(int* n, const char** arg1) { // parses file into process str
 			(*n)++;
 		}
 	}
-	processes = realloc(processes, (*n) * (sizeof(process)));
+	processes = (process*)realloc(processes, (*n) * (sizeof(process)));
 	#ifdef DEBUG_MODE
 		printf("\nprocesses parsed: %d\n",*n);
 		debugPrintProcesses(&processes,*n);
@@ -370,8 +370,374 @@ void FCFS(process** processes, int n, int t_cs, float* sum_wait_time, float* sum
 	freeQueue(&wait_array,n);
 }
 
-void SRT() { // Shortest Remaining Time Algorithm
-	
+
+
+
+/*==================================================================================================*/
+
+int comparator2(const void * a, const void* b) { // comparator to handle ties
+	process* p = (process*) a;
+	process* q = (process*) b;
+	int diff = p->update_time - q->update_time;
+	if (diff == 0) {
+		diff = p->cpu_burst_time - q->cpu_burst_time;
+		if (diff == 0) {
+			diff = p->io_time - q->io_time;
+			if (diff == 0) {
+				diff = p->initial_arrive_time - q->initial_arrive_time;
+				if (diff == 0) {
+					return p->proc_id - q->proc_id;
+				}
+			}
+		}
+	}
+	return diff;
+}
+
+
+void printQueue2(process* queue, int size){
+	if (size == 0) printf("[Q <empty>]\n");
+	else {
+		printf("[Q");
+		fflush(stdout);
+		int i;
+		for (i = 0; i < size; i++) {
+			printf(" %c",queue[i].proc_id);
+			fflush(stdout);
+		}
+		printf("]\n");
+	}
+	fflush(stdout);
+}
+
+
+process* add_to_queue(process* queue, int size, process* p){
+	queue[size]=*p;
+	#if D2
+	printf("before adding size is %d",size);
+	printQueue2(queue, size);
+	#endif
+	qsort(queue,size+1,sizeof(process),comparator2);
+	#if D2
+	printQueue2(queue, size);
+	#endif
+	return queue;
+}
+
+//return the processe being removed, not the queue!!!
+process* remove_from_queue(process* queue, int size, int index){
+	process* r=(process*)malloc(sizeof(process));
+	*r=queue[index];
+	for (int i = index; i < size-1; ++i)
+	{
+		queue[i]=queue[i+1];
+	}
+	return r;
+}
+
+void d_printq(process* queue, int size){
+	for (int i = 0; i < size; ++i)
+	{
+
+		printf("%c|%-5d|",queue[i].proc_id,queue[i].initial_arrive_time);
+		fflush(stdout);
+		printf("%-5d|%-5d|%-5d  State: ",queue[i].cpu_burst_time,queue[i].num_bursts,queue[i].io_time);
+		fflush(stdout);
+	   	printState(queue[i].state);
+		printf("  Update at time %dms\n",queue[i].update_time);
+		fflush(stdout);
+	}
+}
+
+
+/*
+											    								 	        - --------------------------
+-------- 	---------------------------------------       	---------------------------		|						  |
+| CPU  |    |   cs_space[0]   |   cs_space[1]     |     	|    ready_queue           |  	|     IO_SPACE            |
+--------    ---------------------------------------         --------------------------      |						  |	
+			 switching out====>
+			               <============switching in										---------------------------
+*/
+
+void SRT(process* processes, int n, int t_cs) { // Shortest Remaining Time Algorithm
+	printf("\n\n\n");
+	int finished=0;
+	int t=0;
+	int process_index=0;
+	int ready_size=0;
+	int io_size=0;
+	int cs_status=0;
+	int CPU_status=0;     //0: free   1:only out  2:only in  3: both
+	int preempt_remaining_time=0;
+	process* CPU=(process*)malloc(sizeof(process));
+	process* ready_queue=(process*)malloc(26*sizeof(process));
+	process* tmp=(process*)malloc(sizeof(process));
+	process* io_space=(process*)malloc(26*sizeof(process));
+	process* cs_space=(process*)malloc(2*sizeof(process));
+	printf("time %dms: Simulator started for FCFS ",t);
+	fflush(stdout);
+	printQueue2(ready_queue,ready_size);
+	while(finished!=n){
+		for (int i = process_index; i < n; ++i)
+		{
+			//chekc if there is new arrival
+			if (processes[i].initial_arrive_time==t){
+				*tmp=processes[i];
+				if (CPU_status==1 && ( (CPU->update_time-t)>tmp->cpu_burst_time )  && cs_status==0){
+					cs_status=4;
+					printf("time %dms: Process %c arrived and will preempt %c ",t,processes[i].proc_id, CPU->proc_id);
+					fflush(stdout);
+					printQueue2(ready_queue,ready_size);
+					process_index++;
+					preempt_remaining_time=CPU->update_time-t;
+					cs_space[0]=*CPU;
+					cs_space[1]=*tmp;
+					cs_space[0].state=11;
+					cs_space[0].wait_start_time=preempt_remaining_time;
+					cs_space[0].update_time=t+4;
+					cs_space[1].update_time=t+8;	
+				}
+				else{
+					tmp->update_time=processes[i].cpu_burst_time;
+					add_to_queue(ready_queue,ready_size,tmp);
+					ready_size++;
+					printf("time %dms: Process %c arrived and added to ready queue ",t,processes[i].proc_id);
+					//qsort(ready_queue,ready_size,sizeof(process*),comparator2);
+					process_index++;
+					fflush(stdout);
+					printQueue2(ready_queue,ready_size);	
+					#if D2
+					d_printq(ready_queue,ready_size);
+					#endif					
+				}
+			}
+		}
+		//check all io space if someone is finishing io
+		//add preepetion later
+		for (int i = 0; i < io_size; ++i)
+		{
+			*tmp=io_space[i];
+			if (io_space[i].update_time==t){
+				if (CPU_status==1 && ( (CPU->update_time-t)>tmp->cpu_burst_time )  && cs_status==0){
+					cs_status=4;
+					printf("time %dms: Process %c completed I/O and will preempt %c ",t,io_space[i].proc_id, CPU->proc_id);
+					fflush(stdout);
+					printQueue2(ready_queue,ready_size);	
+					process_index++;
+					preempt_remaining_time=CPU->update_time-t;
+					cs_space[0]=*CPU;
+					cs_space[1]=*tmp;					
+					cs_space[0].update_time=t+4;
+					cs_space[1].update_time=t+8;	
+					cs_space[0].state=11;
+					cs_space[0].wait_start_time=preempt_remaining_time;
+				}
+				else{
+					process* r=remove_from_queue(io_space,io_size,i);
+					io_size--;
+					r->update_time=r->cpu_burst_time;
+					add_to_queue(ready_queue,ready_size,r);
+					ready_size++;
+					printf("time %dms: Process %c completed I/O; added to ready queue ",t,r->proc_id);
+					printQueue2(ready_queue,ready_size);
+				}
+			}
+		}
+		//finishing up context switch
+		//for only out case 
+		if (cs_status==1 && cs_space[0].update_time==t){
+			*tmp=cs_space[0];
+			CPU_status=0;
+			cs_status=0;
+			if (cs_space[0].num_bursts==0){			
+				finished++;
+			}
+			else{
+				//add to IO
+				tmp->update_time=t+tmp->io_time;
+				add_to_queue(io_space,io_size,tmp);
+				io_size++;
+			}
+		}
+		//just finished cs for only in case
+		if (cs_status==2 && cs_space[1].update_time==t){
+			/*
+			*CPU=cs_space[1];
+			CPU->update_time=t+CPU->cpu_burst_time;
+			cs_status=0;
+			CPU_status=1;
+			printf("time %dms: Process %c started using the CPU ",t,CPU->proc_id);
+			printQueue2(ready_queue,ready_size);
+			*/
+			cs_status=0;
+			*CPU=cs_space[1];
+			CPU_status=1;
+			if (cs_space[1].state==11){
+				CPU->update_time=CPU->wait_start_time+t;
+				CPU->state=0;
+				printf("time %dms: Process %c started using the CPU with %dms remaining  ",t,CPU->proc_id,CPU->wait_start_time);
+				fflush(stdout);
+			}
+			else{
+				CPU->update_time=CPU->cpu_burst_time+t;
+				printf("time %dms: Process %c started using the CPU ",t,CPU->proc_id);
+				fflush(stdout);
+			}
+			printQueue2(ready_queue,ready_size);
+		}
+		//just finished cs for both in and out case
+		if (cs_status==3){
+			if (cs_space[0].update_time==t){
+				*tmp=cs_space[0];
+				if (cs_space[0].num_bursts==0){			
+					finished++;
+				}
+				else{
+					tmp->update_time=t+tmp->io_time;
+					add_to_queue(io_space,io_size,tmp);
+					io_size++;
+				}
+			}
+			if (cs_space[1].update_time==t){
+				cs_status=0;
+				*CPU=cs_space[1];
+				CPU_status=1;
+				if (cs_space[1].state==11){
+					CPU->update_time=CPU->wait_start_time+t;
+					CPU->state=0;
+					printf("time %dms: Process %c started using the CPU with %dms remaining  ",t,CPU->proc_id,CPU->wait_start_time);
+					fflush(stdout);
+				}
+				else{
+					CPU->update_time=CPU->cpu_burst_time+t;
+					printf("time %dms: Process %c started using the CPU ",t,CPU->proc_id);
+					fflush(stdout);
+				}
+				printQueue2(ready_queue,ready_size);
+			}
+		}
+		if (cs_status==4){
+			//printf("preemept mode\n");
+			if (cs_space[0].update_time==t){
+				*tmp=cs_space[0];
+				tmp->update_time=tmp->wait_start_time;
+				add_to_queue(ready_queue,ready_size,tmp);
+				ready_size++;
+			}
+			if (cs_space[1].update_time==t){
+				cs_status=0;
+				*CPU=cs_space[1];
+				CPU_status=1;
+				if (cs_space[1].state==11){
+					CPU->update_time=CPU->wait_start_time+t;
+					CPU->state=0;
+					printf("time %dms: Process %c started using the CPU with %dms remaining  ",t,CPU->proc_id,CPU->wait_start_time);
+					fflush(stdout);
+				}
+				else{
+					CPU->update_time=CPU->cpu_burst_time+t;
+					printf("time %dms: Process %c started using the CPU ",t,CPU->proc_id);
+					fflush(stdout);
+				}
+				printQueue2(ready_queue,ready_size);
+			}
+		}
+		//just finished cs for other cases
+		/*
+		if ( (cs_status==3 || cs_status==1) && (cs_space[0].update_time==t) ){
+			//finish the switching out part
+			*tmp=cs_space[0];
+			if (cs_space[0].num_bursts==0){
+				printf("time %dms: Process %c terminated ",t,CPU->proc_id);
+				printQueue2(ready_queue,ready_size);				
+				finished++;
+			}
+			else{
+				//add to IO
+				tmp->update_time=t+tmp->io_time;
+				add_to_queue(io_space,io_size,tmp);
+				io_size++;
+			}
+			//you need to swith in, right?
+			if (cs_status==3){
+				*CPU=cs_space[1];
+				CPU->update_time=CPU->cpu_burst_time+t;
+				printf("time %dms: Process %c started using the CPU ",t,CPU->proc_id);
+				fflush(stdout);
+				printQueue2(ready_queue,ready_size);
+				CPU_status=1;
+			}
+			else{
+				CPU_status=0;
+			}
+			cs_status=0;
+		}
+*/
+		//putting into context switch
+		//CPu needs to be removed
+		if (CPU_status==1 && CPU->update_time==t){
+			//only out and no in
+			cs_space[0]=*CPU;
+			cs_space[0].update_time=t+4;
+			CPU_status=0;
+			cs_status=1;
+			cs_space[0].num_bursts--;
+			if (cs_space[0].num_bursts>0){
+				printf("time %dms: Process %c completed a CPU burst; %d bursts to go ",t,cs_space[0].proc_id, cs_space[0].num_bursts);
+				printQueue2(ready_queue,ready_size);
+				printf("time %dms: Process %c switching out of CPU; will block on I/O until time %dms ",t,cs_space[0].proc_id,t + t_cs/2  + CPU->io_time);
+				printQueue2(ready_queue,ready_size);				
+				//in and out
+				if (ready_size!=0){
+					cs_space[1]=ready_queue[0];		
+					remove_from_queue(ready_queue,ready_size,0);
+					#if D3
+					d_printq(cs_space,2);
+					#endif 
+					ready_size--;
+					cs_status=3;
+					cs_space[1].update_time=t+8;
+				}
+				else{			
+				}
+
+			}
+			if (cs_space[0].num_bursts==0){
+				printf("time %dms: Process %c terminated ",t,CPU->proc_id);
+				printQueue2(ready_queue,ready_size);	
+			}
+			/*
+			if (cs_space[0].num_bursts>0){
+				//wokr                 asdf asdf asdf asd f
+				printf("time %dms: Process %c completed a CPU burst; %d bursts to go ",t,cs_space[0].proc_id, cs_space[0].num_bursts);
+				printQueue2(ready_queue,ready_size);
+				if (cs_status==3){
+					printf("time %dms: Process %c switching out of CPU; will block on I/O until time %dms ",t,cs_space[0].proc_id,t + t_cs  + CPU->io_time);
+					fflush(stdout);
+				}
+				else{
+					printf("time %dms: Process %c switching out of CPU; will block on I/O until time %dms ",t,cs_space[0].proc_id,t + (t_cs / 2) + CPU->io_time);
+					fflush(stdout);
+				}
+				printQueue2(ready_queue,ready_size);
+			}
+			*/
+		}
+		//only in
+		if( (cs_status==0) && (CPU_status==0) && (ready_size>0)  ){
+			cs_status=2;
+			cs_space[1]=ready_queue[0];
+			remove_from_queue(ready_queue,ready_size,0);
+			ready_size--;
+			cs_space[1].update_time=t+4;
+			//printf("moving in, update_time=%d\n",cs_space[1].update_time);
+		}
+		if (finished!=n){
+			t++;
+		}
+	}
+	printf("time %dms: Simulator ended for SRT\n",t);
+	free(tmp);
 }
 
 void RR(int t_slice, int rr_add) { // Round Robin Algorithm
@@ -431,11 +797,19 @@ int main(int argc, char const *argv[]) {
    int* context_switches = (int*)calloc(n,sizeof(int));
    int* preemptions = (int*)calloc(n,sizeof(int));
    preemptions[0] = 0; // FCFS is a non-preemptive algorithm
+
+
    FCFS(&processes,n,t_cs,&sum_wait_time[0],&sum_turnaround_time[0],&context_switches[0]);
-   SRT();
+   n=0;
+   process* processes2 = fileParser(&n, &argv[1]);
+   //d_printq(processes2,n);
+   SRT(processes2,n, t_cs);
+
+
    RR(t_slice, rr_add);
    fileOutput(&processes,n,&sum_wait_time,&sum_turnaround_time,&context_switches,&preemptions,&argv[2]);
    free(processes);
+   free(processes2);
    free(sum_wait_time);
    free(sum_turnaround_time);
    free(context_switches);
