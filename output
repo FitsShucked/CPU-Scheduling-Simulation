@@ -1,18 +1,69 @@
-Algorithm FCFS
--- average CPU burst time: 20.78 ms
--- average wait time: 10.67 ms
--- average turnaround time: 39.44 ms
--- total number of context switches: 9
--- total number of preemptions: 0
-Algorithm SRT
--- average CPU burst time: 20.78 ms
--- average wait time: 0.00 ms
--- average turnaround time: 0.00 ms
--- total number of context switches: 0
--- total number of preemptions: 0
-Algorithm RR
--- average CPU burst time: 20.78 ms
--- average wait time: 0.00 ms
--- average turnaround time: 0.00 ms
--- total number of context switches: 0
--- total number of preemptions: 0
+time 0ms: Simulator started for FCFS [Q <empty>]
+time 0ms: Process A arrived and added to ready queue [Q A]
+time 4ms: Process A started using the CPU [Q <empty>]
+time 20ms: Process B arrived and added to ready queue [Q B]
+time 24ms: Process A completed a CPU burst; 4 bursts to go [Q B]
+time 24ms: Process A switching out of CPU; will block on I/O until time 68ms [Q B]
+time 32ms: Process B started using the CPU [Q <empty>]
+time 68ms: Process B completed a CPU burst; 1 burst to go [Q <empty>]
+time 68ms: Process B switching out of CPU; will block on I/O until time 172ms [Q <empty>]
+time 68ms: Process A completed I/O; added to ready queue [Q A]
+time 68ms: Process C arrived and added to ready queue [Q A C]
+time 74ms: Process D arrived and added to ready queue [Q C D]
+time 76ms: Process A started using the CPU [Q C D]
+time 96ms: Process A completed a CPU burst; 3 bursts to go [Q C D]
+time 96ms: Process A switching out of CPU; will block on I/O until time 140ms [Q C D]
+time 104ms: Process C started using the CPU [Q D]
+time 114ms: Process C terminated [Q D]
+time 122ms: Process D started using the CPU [Q <empty>]
+time 127ms: Process D terminated [Q <empty>]
+time 140ms: Process A completed I/O; added to ready queue [Q A]
+time 144ms: Process A started using the CPU [Q <empty>]
+time 164ms: Process A completed a CPU burst; 2 bursts to go [Q <empty>]
+time 164ms: Process A switching out of CPU; will block on I/O until time 208ms [Q <empty>]
+time 172ms: Process B completed I/O; added to ready queue [Q B]
+time 176ms: Process B started using the CPU [Q <empty>]
+time 208ms: Process A completed I/O; added to ready queue [Q A]
+time 212ms: Process B terminated [Q A]
+time 220ms: Process A started using the CPU [Q <empty>]
+time 240ms: Process A completed a CPU burst; 1 burst to go [Q <empty>]
+time 240ms: Process A switching out of CPU; will block on I/O until time 284ms [Q <empty>]
+time 284ms: Process A completed I/O; added to ready queue [Q A]
+time 288ms: Process A started using the CPU [Q <empty>]
+time 308ms: Process A terminated [Q <empty>]
+time 312ms: Simulator ended for FCFS
+
+time 0ms: Simulator started for SRT [Q <empty>]
+time 0ms: Process A arrived and added to ready queue [Q A]
+time 4ms: Process A started using the CPU [Q <empty>]
+time 20ms: Process B arrived and added to ready queue [Q B]
+time 24ms: Process A completed a CPU burst; 4 bursts to go [Q B]
+time 24ms: Process A switching out of CPU; will block on I/O until time 68ms [Q B]
+time 32ms: Process B started using the CPU [Q <empty>]
+time 68ms: Process C arrived and added to ready queue [Q C]
+time 68ms: Process A completed I/O; added to ready queue [Q C A]
+time 68ms: Process B completed a CPU burst; 1 bursts to go [Q C A]
+time 68ms: Process B switching out of CPU; will block on I/O until time 172ms [Q C A]
+time 74ms: Process D arrived and added to ready queue [Q D A]
+time 76ms: Process C started using the CPU [Q D A]
+time 86ms: Process C terminated [Q D A]
+time 94ms: Process D started using the CPU [Q A]
+time 99ms: Process D terminated [Q A]
+time 107ms: Process A started using the CPU [Q <empty>]
+time 127ms: Process A completed a CPU burst; 3 bursts to go [Q <empty>]
+time 127ms: Process A switching out of CPU; will block on I/O until time 171ms [Q <empty>]
+time 171ms: Process A completed I/O; added to ready queue [Q A]
+time 172ms: Process B completed I/O; added to ready queue [Q B]
+time 175ms: Process A started using the CPU [Q B]
+time 195ms: Process A completed a CPU burst; 2 bursts to go [Q B]
+time 195ms: Process A switching out of CPU; will block on I/O until time 239ms [Q B]
+time 203ms: Process B started using the CPU [Q <empty>]
+time 239ms: Process A completed I/O; added to ready queue [Q A]
+time 239ms: Process B terminated [Q A]
+time 247ms: Process A started using the CPU [Q <empty>]
+time 267ms: Process A completed a CPU burst; 1 bursts to go [Q <empty>]
+time 267ms: Process A switching out of CPU; will block on I/O until time 311ms [Q <empty>]
+time 311ms: Process A completed I/O; added to ready queue [Q A]
+time 315ms: Process A started using the CPU [Q <empty>]
+time 335ms: Process A terminated [Q <empty>]
+time 339ms: Simulator ended for SRT
