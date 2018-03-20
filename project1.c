@@ -367,18 +367,7 @@ int comparator2(const void * a, const void* b) { // comparator to handle ties
 	process* p = (process*) a;
 	process* q = (process*) b;
 	int diff = p->update_time - q->update_time;
-	if (diff == 0) {
-		diff = p->cpu_burst_time - q->cpu_burst_time;
-		if (diff == 0) {
-			diff = p->io_time - q->io_time;
-			if (diff == 0) {
-				diff = p->initial_arrive_time - q->initial_arrive_time;
-				if (diff == 0) {
-					return p->proc_id - q->proc_id;
-				}
-			}
-		}
-	}
+	if (diff == 0) return p->proc_id - q->proc_id;
 	return diff;
 }
 
@@ -397,7 +386,6 @@ void printQueue2(process* queue, int size){
 	}
 	fflush(stdout);
 }
-
 
 process* add_to_queue(process* queue, int size, process* p){
 	queue[size]=*p;
@@ -552,14 +540,6 @@ void SRT(process* processes, int n, int t_cs) { // Shortest Remaining Time Algor
 		}
 		//just finished cs for only in case
 		if (cs_status==2 && cs_space[1].update_time==t){
-			/*
-			*CPU=cs_space[1];
-			CPU->update_time=t+CPU->cpu_burst_time;
-			cs_status=0;
-			CPU_status=1;
-			printf("time %dms: Process %c started using the CPU ",t,CPU->proc_id);
-			printQueue2(ready_queue,ready_size);
-			*/
 			cs_status=0;
 			*CPU=cs_space[1];
 			CPU_status=1;
@@ -633,37 +613,6 @@ void SRT(process* processes, int n, int t_cs) { // Shortest Remaining Time Algor
 				printQueue2(ready_queue,ready_size);
 			}
 		}
-		//just finished cs for other cases
-		/*
-		if ( (cs_status==3 || cs_status==1) && (cs_space[0].update_time==t) ){
-			//finish the switching out part
-			*tmp=cs_space[0];
-			if (cs_space[0].num_bursts==0){
-				printf("time %dms: Process %c terminated ",t,CPU->proc_id);
-				printQueue2(ready_queue,ready_size);				
-				finished++;
-			}
-			else{
-				//add to IO
-				tmp->update_time=t+tmp->io_time;
-				add_to_queue(io_space,io_size,tmp);
-				io_size++;
-			}
-			//you need to swith in, right?
-			if (cs_status==3){
-				*CPU=cs_space[1];
-				CPU->update_time=CPU->cpu_burst_time+t;
-				printf("time %dms: Process %c started using the CPU ",t,CPU->proc_id);
-				fflush(stdout);
-				printQueue2(ready_queue,ready_size);
-				CPU_status=1;
-			}
-			else{
-				CPU_status=0;
-			}
-			cs_status=0;
-		}
-*/
 		//putting into context switch
 		//CPu needs to be removed
 		if (CPU_status==1 && CPU->update_time==t){
@@ -697,22 +646,6 @@ void SRT(process* processes, int n, int t_cs) { // Shortest Remaining Time Algor
 				printf("time %dms: Process %c terminated ",t,CPU->proc_id);
 				printQueue2(ready_queue,ready_size);	
 			}
-			/*
-			if (cs_space[0].num_bursts>0){
-				//wokr                 asdf asdf asdf asd f
-				printf("time %dms: Process %c completed a CPU burst; %d bursts to go ",t,cs_space[0].proc_id, cs_space[0].num_bursts);
-				printQueue2(ready_queue,ready_size);
-				if (cs_status==3){
-					printf("time %dms: Process %c switching out of CPU; will block on I/O until time %dms ",t,cs_space[0].proc_id,t + t_cs  + CPU->io_time);
-					fflush(stdout);
-				}
-				else{
-					printf("time %dms: Process %c switching out of CPU; will block on I/O until time %dms ",t,cs_space[0].proc_id,t + (t_cs / 2) + CPU->io_time);
-					fflush(stdout);
-				}
-				printQueue2(ready_queue,ready_size);
-			}
-			*/
 		}
 		//only in
 		if( (cs_status==0) && (CPU_status==0) && (ready_size>0)  ){
@@ -721,7 +654,6 @@ void SRT(process* processes, int n, int t_cs) { // Shortest Remaining Time Algor
 			remove_from_queue(ready_queue,ready_size,0);
 			ready_size--;
 			cs_space[1].update_time=t+4;
-			//printf("moving in, update_time=%d\n",cs_space[1].update_time);
 		}
 		if (finished!=n){
 			t++;
