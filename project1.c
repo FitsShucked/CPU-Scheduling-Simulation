@@ -21,7 +21,7 @@ typedef struct process { // struct for storing the data of a process
 	int num_bursts; // number of times process wants to be in the CPU
 	int io_time; // time process waits after being in CPU
 	int state; // state process is in
-	int burst_remaining_time;
+	int burst_remaining_time; // time left to complete CPU burst
 } process;
 
 void printState(int s) { // prints the state a process is in for debugging print function
@@ -322,34 +322,19 @@ void FCFS(process** processes, int n, int t_cs, float* sum_wait_time, float* sum
 			qsort(ready_queue,ready_capacity,sizeof(process*),comparator); // clears ties
 			#ifdef DEBUG_MODE
 				if (terminated < n) { // debug prints of CPU, ready queue, and wait array
-					printf("\n--- Printing at time %dms\n",real_t);
+					printf("\n--- Printing at time %dms\n%s CPU\n",real_t, CPU != NULL ? "Printing" : "Empty");
 					fflush(stdout);
 					if (CPU != NULL) {
-						printf("Printing CPU\n");
-						fflush(stdout);
 						process** temp = &CPU;
 						debugPrintQueue(&temp,1);
 						temp = NULL;
-					} else {
-						printf("Empty CPU\n");
-						fflush(stdout);
 					}
-					if (ready_capacity > 0) {
-						printf("Printing Ready Queue\n");
-						fflush(stdout);
-						debugPrintQueue(&ready_queue,ready_capacity);
-					} else {
-						printf("Empty Ready Queue\n");
-						fflush(stdout);
-					}
-					if (wait_capacity > 0) {
-						printf("Printing Wait Array\n");
-						fflush(stdout);
-						debugPrintQueue(&wait_array,wait_capacity);
-					} else {
-						printf("Empty Wait Array\n");
-						fflush(stdout);
-					}
+					printf("%s Ready Queue\n", ready_capacity > 0 ? "Printing" : "Empty");
+					fflush(stdout);
+					if (ready_capacity > 0)	debugPrintQueue(&ready_queue,ready_capacity);
+					printf("%s Wait Array\n", wait_capacity > 0 ? "Printing" : "Empty");
+					fflush(stdout);
+					if (wait_capacity > 0) debugPrintQueue(&wait_array,wait_capacity);
 					printf("--------------------------\n\n");
 					fflush(stdout);
 				}
@@ -367,7 +352,7 @@ void FCFS(process** processes, int n, int t_cs, float* sum_wait_time, float* sum
 
 /*==================================================================================================*/
 
-int comparator2(const void * a, const void* b) { // comparator to handle ties
+int comparator2(const void* a, const void* b) { // comparator to handle ties
 	process* p = (process*) a;
 	process* q = (process*) b;
 	int diff = p->update_time - q->update_time;
@@ -375,7 +360,7 @@ int comparator2(const void * a, const void* b) { // comparator to handle ties
 	return diff;
 }
 
-void printQueue2(process* queue, int size){
+void printQueue2(process* queue, int size) {
 	if (size == 0) printf("[Q <empty>]\n");
 	else {
 		printf("[Q");
@@ -390,31 +375,27 @@ void printQueue2(process* queue, int size){
 	fflush(stdout);
 }
 
-process* add_to_queue(process* queue, int size, process* p){
+process* add_to_queue(process* queue, int size, process* p) {
 	queue[size]=*p;
 	p=NULL;
 	qsort(queue,size+1,sizeof(process),comparator2);
 	return queue;
 }
 
-//return the processe being removed, not the queue!!!
-process* remove_return_from_queue(process* queue, int size, int index){
+process* remove_return_from_queue(process* queue, int size, int index) { // return the processe being removed, not the queue!!!
 	process* r=(process*)malloc(sizeof(process));
 	*r=queue[index];
 	int i;
-	for (i = index; i < size-1; ++i)
-	{
-		queue[i]=queue[i+1];
-	}
+	for (i = index; i < size-1; ++i) queue[i]=queue[i+1];
 	return r;
 }
 
-void remove_from_queue(process* queue, int size, int index){
+void remove_from_queue(process* queue, int size, int index) {
 	int i;
 	for (i = index; i < size-1; ++i) queue[i]=queue[i+1];
 }
 
-void d_printq(process* queue, int size){
+void d_printq(process* queue, int size) {
 	int i;
 	for (i = 0; i < size; ++i) {
 		printf("%c|%-5d|",queue[i].proc_id,queue[i].initial_arrive_time);
@@ -462,7 +443,7 @@ void SRT(process* processes, int n, int t_cs, float * sum_wait_time, float* sum_
 	while(finished!=n){
 		int i;
 		//putting into context switch
-		//CPu needs to be removed
+		//CPU needs to be removed
 		tw+=ready_size;
 		if (CPU_status==1 && CPU->update_time==t){
 			//only out and no in
@@ -494,7 +475,6 @@ void SRT(process* processes, int n, int t_cs, float * sum_wait_time, float* sum_
 					cs_space[1].update_time=t+8;
 					tw+=4;
 				}
-
 			}
 			if (cs_space[0].num_bursts==0){
 				printf("time %dms: Process %c terminated ",t,CPU->proc_id);
@@ -505,8 +485,7 @@ void SRT(process* processes, int n, int t_cs, float * sum_wait_time, float* sum_
 		}
 		//check all io space if someone is finishing io
 		//add preepetion later
-		for (i = 0; i < io_size; ++i)
-		{
+		for (i = 0; i < io_size; ++i){
 			*tmp=io_space[i];
 			if (io_space[i].update_time==t){
 				if (CPU_status==1 && ( (CPU->update_time-t)>tmp->cpu_burst_time )  && cs_status==0){
@@ -537,10 +516,8 @@ void SRT(process* processes, int n, int t_cs, float * sum_wait_time, float* sum_
 				}
 			}
 		}
-
-		for (i = process_index; i < n; ++i)
-		{
-			//chekc if there is new arrival
+		for (i = process_index; i < n; ++i){
+			//check if there is new arrival
 			if (processes[i].initial_arrive_time==t){
 				*tmp=processes[i];
 				total_burst=total_burst+tmp->num_bursts; 
@@ -574,7 +551,6 @@ void SRT(process* processes, int n, int t_cs, float * sum_wait_time, float* sum_
 				}
 			}
 		}
-
 		//finishing up context switch
 		//for only out case 
 		if (cs_status==1 && cs_space[0].update_time==t){
@@ -670,7 +646,6 @@ void SRT(process* processes, int n, int t_cs, float * sum_wait_time, float* sum_
 				printQueue2(ready_queue,ready_size);
 			}
 		}
-
 		//only in
 		if( (cs_status==0) && (CPU_status==0) && (ready_size>0)  ){
 			cs_status=2;
@@ -696,6 +671,8 @@ void SRT(process* processes, int n, int t_cs, float * sum_wait_time, float* sum_
 	free(tmp);
 }
 
+/*==================================================================================================*/
+
 void RR(int t_slice, int rr_add) { // Round Robin Algorithm
 	
 }
@@ -720,9 +697,7 @@ void fileOutput(process** processes, int n, float** sum_wait_time, float** sum_t
 		fflush(stdout);
 	#endif
 	for (i = 0; i < 3; i++) {
-		if (i == 0) fprintf(wFile,"Algorithm FCFS\n");
-		else if (i == 1) fprintf(wFile,"Algorithm SRT\n");
-		else fprintf(wFile,"Algorithm RR\n");
+		fprintf(wFile,"Algorithm %s\n", i == 0 ? "FCFS" : i == 1 ? "SRT" : "RR");
 		fprintf(wFile,"-- average CPU burst time: %.2f ms\n",(float) cpu_burst_sum / bursts);
 		fprintf(wFile,"-- average wait time: %.2f ms\n",(*sum_wait_time)[i] / bursts);
 		fprintf(wFile,"-- average turnaround time: %.2f ms\n",(*sum_turnaround_time)[i] / bursts);
@@ -752,7 +727,7 @@ int main(int argc, char const *argv[]) {
 	int* preemptions = (int*)calloc(3,sizeof(int));
 	preemptions[0] = 0; // FCFS is a non-preemptive algorithm
 	FCFS(&processes,n,t_cs,&sum_wait_time[0],&sum_turnaround_time[0],&context_switches[0]);
-	SRT(processes,n, t_cs,&sum_wait_time[1],&sum_turnaround_time[1],&context_switches[1],&preemptions[1]);
+	SRT(processes,n,t_cs,&sum_wait_time[1],&sum_turnaround_time[1],&context_switches[1],&preemptions[1]);
 	RR(t_slice, rr_add);
 	fileOutput(&processes,n,&sum_wait_time,&sum_turnaround_time,&context_switches,&preemptions,&argv[2]);
 	free(processes);

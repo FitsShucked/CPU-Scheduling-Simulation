@@ -1,69 +1,1691 @@
+rr_add is END
+
+processes parsed: 6
+A|0    |100  |4    |200  
+B|0    |101  |4    |200  
+C|0    |102  |4    |200  
+X|0    |103  |4    |200  
+Y|0    |104  |4    |200  
+Z|0    |105  |4    |200  
+
 time 0ms: Simulator started for FCFS [Q <empty>]
 time 0ms: Process A arrived and added to ready queue [Q A]
-time 4ms: Process A started using the CPU [Q <empty>]
-time 20ms: Process B arrived and added to ready queue [Q B]
-time 24ms: Process A completed a CPU burst; 4 bursts to go [Q B]
-time 24ms: Process A switching out of CPU; will block on I/O until time 68ms [Q B]
-time 32ms: Process B started using the CPU [Q <empty>]
-time 68ms: Process B completed a CPU burst; 1 burst to go [Q <empty>]
-time 68ms: Process B switching out of CPU; will block on I/O until time 172ms [Q <empty>]
-time 68ms: Process A completed I/O; added to ready queue [Q A]
-time 68ms: Process C arrived and added to ready queue [Q A C]
-time 74ms: Process D arrived and added to ready queue [Q C D]
-time 76ms: Process A started using the CPU [Q C D]
-time 96ms: Process A completed a CPU burst; 3 bursts to go [Q C D]
-time 96ms: Process A switching out of CPU; will block on I/O until time 140ms [Q C D]
-time 104ms: Process C started using the CPU [Q D]
-time 114ms: Process C terminated [Q D]
-time 122ms: Process D started using the CPU [Q <empty>]
-time 127ms: Process D terminated [Q <empty>]
-time 140ms: Process A completed I/O; added to ready queue [Q A]
-time 144ms: Process A started using the CPU [Q <empty>]
-time 164ms: Process A completed a CPU burst; 2 bursts to go [Q <empty>]
-time 164ms: Process A switching out of CPU; will block on I/O until time 208ms [Q <empty>]
-time 172ms: Process B completed I/O; added to ready queue [Q B]
-time 176ms: Process B started using the CPU [Q <empty>]
-time 208ms: Process A completed I/O; added to ready queue [Q A]
-time 212ms: Process B terminated [Q A]
-time 220ms: Process A started using the CPU [Q <empty>]
-time 240ms: Process A completed a CPU burst; 1 burst to go [Q <empty>]
-time 240ms: Process A switching out of CPU; will block on I/O until time 284ms [Q <empty>]
-time 284ms: Process A completed I/O; added to ready queue [Q A]
-time 288ms: Process A started using the CPU [Q <empty>]
-time 308ms: Process A terminated [Q <empty>]
-time 312ms: Simulator ended for FCFS
+
+wait time for A: 0ms
+
+time 0ms: Process B arrived and added to ready queue [Q A B]
+time 0ms: Process C arrived and added to ready queue [Q A B C]
+time 0ms: Process X arrived and added to ready queue [Q A B C X]
+time 0ms: Process Y arrived and added to ready queue [Q A B C X Y]
+time 0ms: Process Z arrived and added to ready queue [Q A B C X Y Z]
+
+--- Printing at time 0ms
+Empty CPU
+Printing Ready Queue
+B|0    |101  |4    |200    State: READY       Update at time 0ms
+C|0    |102  |4    |200    State: READY       Update at time 0ms
+X|0    |103  |4    |200    State: READY       Update at time 0ms
+Y|0    |104  |4    |200    State: READY       Update at time 0ms
+Z|0    |105  |4    |200    State: READY       Update at time 0ms
+A|0    |100  |4    |200    State: CS_BRING    Update at time 4ms
+Empty Wait Array
+--------------------------
+
+
+--- Printing at time 1ms
+Printing CPU
+A|0    |100  |4    |200    State: CS_BRING    Update at time 4ms
+Printing Ready Queue
+B|0    |101  |4    |200    State: READY       Update at time 0ms
+C|0    |102  |4    |200    State: READY       Update at time 0ms
+X|0    |103  |4    |200    State: READY       Update at time 0ms
+Y|0    |104  |4    |200    State: READY       Update at time 0ms
+Z|0    |105  |4    |200    State: READY       Update at time 0ms
+Empty Wait Array
+--------------------------
+
+time 4ms: Process A started using the CPU [Q B C X Y Z]
+
+--- Printing at time 4ms
+Printing CPU
+A|0    |100  |3    |200    State: RUNNING     Update at time 104ms
+Printing Ready Queue
+B|0    |101  |4    |200    State: READY       Update at time 0ms
+C|0    |102  |4    |200    State: READY       Update at time 0ms
+X|0    |103  |4    |200    State: READY       Update at time 0ms
+Y|0    |104  |4    |200    State: READY       Update at time 0ms
+Z|0    |105  |4    |200    State: READY       Update at time 0ms
+Empty Wait Array
+--------------------------
+
+time 104ms: Process A completed a CPU burst; 3 bursts to go [Q B C X Y Z]
+time 104ms: Process A switching out of CPU; will block on I/O until time 308ms [Q B C X Y Z]
+
+--- Printing at time 104ms
+Printing CPU
+A|0    |100  |3    |200    State: CS_REMOVE   Update at time 108ms
+Printing Ready Queue
+B|0    |101  |4    |200    State: READY       Update at time 0ms
+C|0    |102  |4    |200    State: READY       Update at time 0ms
+X|0    |103  |4    |200    State: READY       Update at time 0ms
+Y|0    |104  |4    |200    State: READY       Update at time 0ms
+Z|0    |105  |4    |200    State: READY       Update at time 0ms
+Empty Wait Array
+--------------------------
+
+
+wait time for B: 108ms
+
+
+--- Printing at time 108ms
+Empty CPU
+Printing Ready Queue
+C|0    |102  |4    |200    State: READY       Update at time 0ms
+X|0    |103  |4    |200    State: READY       Update at time 0ms
+Y|0    |104  |4    |200    State: READY       Update at time 0ms
+Z|0    |105  |4    |200    State: READY       Update at time 0ms
+B|0    |101  |4    |200    State: CS_BRING    Update at time 112ms
+Printing Wait Array
+A|0    |100  |3    |200    State: BLOCKED     Update at time 308ms
+--------------------------
+
+
+--- Printing at time 109ms
+Printing CPU
+B|0    |101  |4    |200    State: CS_BRING    Update at time 112ms
+Printing Ready Queue
+C|0    |102  |4    |200    State: READY       Update at time 0ms
+X|0    |103  |4    |200    State: READY       Update at time 0ms
+Y|0    |104  |4    |200    State: READY       Update at time 0ms
+Z|0    |105  |4    |200    State: READY       Update at time 0ms
+Printing Wait Array
+A|0    |100  |3    |200    State: BLOCKED     Update at time 308ms
+--------------------------
+
+time 112ms: Process B started using the CPU [Q C X Y Z]
+
+--- Printing at time 112ms
+Printing CPU
+B|0    |101  |3    |200    State: RUNNING     Update at time 213ms
+Printing Ready Queue
+C|0    |102  |4    |200    State: READY       Update at time 0ms
+X|0    |103  |4    |200    State: READY       Update at time 0ms
+Y|0    |104  |4    |200    State: READY       Update at time 0ms
+Z|0    |105  |4    |200    State: READY       Update at time 0ms
+Printing Wait Array
+A|0    |100  |3    |200    State: BLOCKED     Update at time 308ms
+--------------------------
+
+time 213ms: Process B completed a CPU burst; 3 bursts to go [Q C X Y Z]
+time 213ms: Process B switching out of CPU; will block on I/O until time 417ms [Q C X Y Z]
+
+--- Printing at time 213ms
+Printing CPU
+B|0    |101  |3    |200    State: CS_REMOVE   Update at time 217ms
+Printing Ready Queue
+C|0    |102  |4    |200    State: READY       Update at time 0ms
+X|0    |103  |4    |200    State: READY       Update at time 0ms
+Y|0    |104  |4    |200    State: READY       Update at time 0ms
+Z|0    |105  |4    |200    State: READY       Update at time 0ms
+Printing Wait Array
+A|0    |100  |3    |200    State: BLOCKED     Update at time 308ms
+--------------------------
+
+
+wait time for C: 217ms
+
+
+--- Printing at time 217ms
+Empty CPU
+Printing Ready Queue
+X|0    |103  |4    |200    State: READY       Update at time 0ms
+Y|0    |104  |4    |200    State: READY       Update at time 0ms
+Z|0    |105  |4    |200    State: READY       Update at time 0ms
+C|0    |102  |4    |200    State: CS_BRING    Update at time 221ms
+Printing Wait Array
+A|0    |100  |3    |200    State: BLOCKED     Update at time 308ms
+B|0    |101  |3    |200    State: BLOCKED     Update at time 417ms
+--------------------------
+
+
+--- Printing at time 218ms
+Printing CPU
+C|0    |102  |4    |200    State: CS_BRING    Update at time 221ms
+Printing Ready Queue
+X|0    |103  |4    |200    State: READY       Update at time 0ms
+Y|0    |104  |4    |200    State: READY       Update at time 0ms
+Z|0    |105  |4    |200    State: READY       Update at time 0ms
+Printing Wait Array
+A|0    |100  |3    |200    State: BLOCKED     Update at time 308ms
+B|0    |101  |3    |200    State: BLOCKED     Update at time 417ms
+--------------------------
+
+time 221ms: Process C started using the CPU [Q X Y Z]
+
+--- Printing at time 221ms
+Printing CPU
+C|0    |102  |3    |200    State: RUNNING     Update at time 323ms
+Printing Ready Queue
+X|0    |103  |4    |200    State: READY       Update at time 0ms
+Y|0    |104  |4    |200    State: READY       Update at time 0ms
+Z|0    |105  |4    |200    State: READY       Update at time 0ms
+Printing Wait Array
+A|0    |100  |3    |200    State: BLOCKED     Update at time 308ms
+B|0    |101  |3    |200    State: BLOCKED     Update at time 417ms
+--------------------------
+
+time 308ms: Process A completed I/O; added to ready queue [Q X Y Z A]
+
+--- Printing at time 308ms
+Printing CPU
+C|0    |102  |3    |200    State: RUNNING     Update at time 323ms
+Printing Ready Queue
+X|0    |103  |4    |200    State: READY       Update at time 0ms
+Y|0    |104  |4    |200    State: READY       Update at time 0ms
+Z|0    |105  |4    |200    State: READY       Update at time 0ms
+A|0    |100  |3    |200    State: READY       Update at time 308ms
+Printing Wait Array
+B|0    |101  |3    |200    State: BLOCKED     Update at time 417ms
+--------------------------
+
+time 323ms: Process C completed a CPU burst; 3 bursts to go [Q X Y Z A]
+time 323ms: Process C switching out of CPU; will block on I/O until time 527ms [Q X Y Z A]
+
+--- Printing at time 323ms
+Printing CPU
+C|0    |102  |3    |200    State: CS_REMOVE   Update at time 327ms
+Printing Ready Queue
+X|0    |103  |4    |200    State: READY       Update at time 0ms
+Y|0    |104  |4    |200    State: READY       Update at time 0ms
+Z|0    |105  |4    |200    State: READY       Update at time 0ms
+A|0    |100  |3    |200    State: READY       Update at time 308ms
+Printing Wait Array
+B|0    |101  |3    |200    State: BLOCKED     Update at time 417ms
+--------------------------
+
+
+wait time for X: 327ms
+
+
+--- Printing at time 327ms
+Empty CPU
+Printing Ready Queue
+Y|0    |104  |4    |200    State: READY       Update at time 0ms
+Z|0    |105  |4    |200    State: READY       Update at time 0ms
+A|0    |100  |3    |200    State: READY       Update at time 308ms
+X|0    |103  |4    |200    State: CS_BRING    Update at time 331ms
+Printing Wait Array
+B|0    |101  |3    |200    State: BLOCKED     Update at time 417ms
+C|0    |102  |3    |200    State: BLOCKED     Update at time 527ms
+--------------------------
+
+
+--- Printing at time 328ms
+Printing CPU
+X|0    |103  |4    |200    State: CS_BRING    Update at time 331ms
+Printing Ready Queue
+Y|0    |104  |4    |200    State: READY       Update at time 0ms
+Z|0    |105  |4    |200    State: READY       Update at time 0ms
+A|0    |100  |3    |200    State: READY       Update at time 308ms
+Printing Wait Array
+B|0    |101  |3    |200    State: BLOCKED     Update at time 417ms
+C|0    |102  |3    |200    State: BLOCKED     Update at time 527ms
+--------------------------
+
+time 331ms: Process X started using the CPU [Q Y Z A]
+
+--- Printing at time 331ms
+Printing CPU
+X|0    |103  |3    |200    State: RUNNING     Update at time 434ms
+Printing Ready Queue
+Y|0    |104  |4    |200    State: READY       Update at time 0ms
+Z|0    |105  |4    |200    State: READY       Update at time 0ms
+A|0    |100  |3    |200    State: READY       Update at time 308ms
+Printing Wait Array
+B|0    |101  |3    |200    State: BLOCKED     Update at time 417ms
+C|0    |102  |3    |200    State: BLOCKED     Update at time 527ms
+--------------------------
+
+time 417ms: Process B completed I/O; added to ready queue [Q Y Z A B]
+
+--- Printing at time 417ms
+Printing CPU
+X|0    |103  |3    |200    State: RUNNING     Update at time 434ms
+Printing Ready Queue
+Y|0    |104  |4    |200    State: READY       Update at time 0ms
+Z|0    |105  |4    |200    State: READY       Update at time 0ms
+A|0    |100  |3    |200    State: READY       Update at time 308ms
+B|0    |101  |3    |200    State: READY       Update at time 417ms
+Printing Wait Array
+C|0    |102  |3    |200    State: BLOCKED     Update at time 527ms
+--------------------------
+
+time 434ms: Process X completed a CPU burst; 3 bursts to go [Q Y Z A B]
+time 434ms: Process X switching out of CPU; will block on I/O until time 638ms [Q Y Z A B]
+
+--- Printing at time 434ms
+Printing CPU
+X|0    |103  |3    |200    State: CS_REMOVE   Update at time 438ms
+Printing Ready Queue
+Y|0    |104  |4    |200    State: READY       Update at time 0ms
+Z|0    |105  |4    |200    State: READY       Update at time 0ms
+A|0    |100  |3    |200    State: READY       Update at time 308ms
+B|0    |101  |3    |200    State: READY       Update at time 417ms
+Printing Wait Array
+C|0    |102  |3    |200    State: BLOCKED     Update at time 527ms
+--------------------------
+
+
+wait time for Y: 438ms
+
+
+--- Printing at time 438ms
+Empty CPU
+Printing Ready Queue
+Z|0    |105  |4    |200    State: READY       Update at time 0ms
+A|0    |100  |3    |200    State: READY       Update at time 308ms
+B|0    |101  |3    |200    State: READY       Update at time 417ms
+Y|0    |104  |4    |200    State: CS_BRING    Update at time 442ms
+Printing Wait Array
+C|0    |102  |3    |200    State: BLOCKED     Update at time 527ms
+X|0    |103  |3    |200    State: BLOCKED     Update at time 638ms
+--------------------------
+
+
+--- Printing at time 439ms
+Printing CPU
+Y|0    |104  |4    |200    State: CS_BRING    Update at time 442ms
+Printing Ready Queue
+Z|0    |105  |4    |200    State: READY       Update at time 0ms
+A|0    |100  |3    |200    State: READY       Update at time 308ms
+B|0    |101  |3    |200    State: READY       Update at time 417ms
+Printing Wait Array
+C|0    |102  |3    |200    State: BLOCKED     Update at time 527ms
+X|0    |103  |3    |200    State: BLOCKED     Update at time 638ms
+--------------------------
+
+time 442ms: Process Y started using the CPU [Q Z A B]
+
+--- Printing at time 442ms
+Printing CPU
+Y|0    |104  |3    |200    State: RUNNING     Update at time 546ms
+Printing Ready Queue
+Z|0    |105  |4    |200    State: READY       Update at time 0ms
+A|0    |100  |3    |200    State: READY       Update at time 308ms
+B|0    |101  |3    |200    State: READY       Update at time 417ms
+Printing Wait Array
+C|0    |102  |3    |200    State: BLOCKED     Update at time 527ms
+X|0    |103  |3    |200    State: BLOCKED     Update at time 638ms
+--------------------------
+
+time 527ms: Process C completed I/O; added to ready queue [Q Z A B C]
+
+--- Printing at time 527ms
+Printing CPU
+Y|0    |104  |3    |200    State: RUNNING     Update at time 546ms
+Printing Ready Queue
+Z|0    |105  |4    |200    State: READY       Update at time 0ms
+A|0    |100  |3    |200    State: READY       Update at time 308ms
+B|0    |101  |3    |200    State: READY       Update at time 417ms
+C|0    |102  |3    |200    State: READY       Update at time 527ms
+Printing Wait Array
+X|0    |103  |3    |200    State: BLOCKED     Update at time 638ms
+--------------------------
+
+time 546ms: Process Y completed a CPU burst; 3 bursts to go [Q Z A B C]
+time 546ms: Process Y switching out of CPU; will block on I/O until time 750ms [Q Z A B C]
+
+--- Printing at time 546ms
+Printing CPU
+Y|0    |104  |3    |200    State: CS_REMOVE   Update at time 550ms
+Printing Ready Queue
+Z|0    |105  |4    |200    State: READY       Update at time 0ms
+A|0    |100  |3    |200    State: READY       Update at time 308ms
+B|0    |101  |3    |200    State: READY       Update at time 417ms
+C|0    |102  |3    |200    State: READY       Update at time 527ms
+Printing Wait Array
+X|0    |103  |3    |200    State: BLOCKED     Update at time 638ms
+--------------------------
+
+
+wait time for Z: 550ms
+
+
+--- Printing at time 550ms
+Empty CPU
+Printing Ready Queue
+A|0    |100  |3    |200    State: READY       Update at time 308ms
+B|0    |101  |3    |200    State: READY       Update at time 417ms
+C|0    |102  |3    |200    State: READY       Update at time 527ms
+Z|0    |105  |4    |200    State: CS_BRING    Update at time 554ms
+Printing Wait Array
+X|0    |103  |3    |200    State: BLOCKED     Update at time 638ms
+Y|0    |104  |3    |200    State: BLOCKED     Update at time 750ms
+--------------------------
+
+
+--- Printing at time 551ms
+Printing CPU
+Z|0    |105  |4    |200    State: CS_BRING    Update at time 554ms
+Printing Ready Queue
+A|0    |100  |3    |200    State: READY       Update at time 308ms
+B|0    |101  |3    |200    State: READY       Update at time 417ms
+C|0    |102  |3    |200    State: READY       Update at time 527ms
+Printing Wait Array
+X|0    |103  |3    |200    State: BLOCKED     Update at time 638ms
+Y|0    |104  |3    |200    State: BLOCKED     Update at time 750ms
+--------------------------
+
+time 554ms: Process Z started using the CPU [Q A B C]
+
+--- Printing at time 554ms
+Printing CPU
+Z|0    |105  |3    |200    State: RUNNING     Update at time 659ms
+Printing Ready Queue
+A|0    |100  |3    |200    State: READY       Update at time 308ms
+B|0    |101  |3    |200    State: READY       Update at time 417ms
+C|0    |102  |3    |200    State: READY       Update at time 527ms
+Printing Wait Array
+X|0    |103  |3    |200    State: BLOCKED     Update at time 638ms
+Y|0    |104  |3    |200    State: BLOCKED     Update at time 750ms
+--------------------------
+
+time 638ms: Process X completed I/O; added to ready queue [Q A B C X]
+
+--- Printing at time 638ms
+Printing CPU
+Z|0    |105  |3    |200    State: RUNNING     Update at time 659ms
+Printing Ready Queue
+A|0    |100  |3    |200    State: READY       Update at time 308ms
+B|0    |101  |3    |200    State: READY       Update at time 417ms
+C|0    |102  |3    |200    State: READY       Update at time 527ms
+X|0    |103  |3    |200    State: READY       Update at time 638ms
+Printing Wait Array
+Y|0    |104  |3    |200    State: BLOCKED     Update at time 750ms
+--------------------------
+
+time 659ms: Process Z completed a CPU burst; 3 bursts to go [Q A B C X]
+time 659ms: Process Z switching out of CPU; will block on I/O until time 863ms [Q A B C X]
+
+--- Printing at time 659ms
+Printing CPU
+Z|0    |105  |3    |200    State: CS_REMOVE   Update at time 663ms
+Printing Ready Queue
+A|0    |100  |3    |200    State: READY       Update at time 308ms
+B|0    |101  |3    |200    State: READY       Update at time 417ms
+C|0    |102  |3    |200    State: READY       Update at time 527ms
+X|0    |103  |3    |200    State: READY       Update at time 638ms
+Printing Wait Array
+Y|0    |104  |3    |200    State: BLOCKED     Update at time 750ms
+--------------------------
+
+
+wait time for A: 355ms
+
+
+--- Printing at time 663ms
+Empty CPU
+Printing Ready Queue
+B|0    |101  |3    |200    State: READY       Update at time 417ms
+C|0    |102  |3    |200    State: READY       Update at time 527ms
+X|0    |103  |3    |200    State: READY       Update at time 638ms
+A|0    |100  |3    |200    State: CS_BRING    Update at time 667ms
+Printing Wait Array
+Y|0    |104  |3    |200    State: BLOCKED     Update at time 750ms
+Z|0    |105  |3    |200    State: BLOCKED     Update at time 863ms
+--------------------------
+
+
+--- Printing at time 664ms
+Printing CPU
+A|0    |100  |3    |200    State: CS_BRING    Update at time 667ms
+Printing Ready Queue
+B|0    |101  |3    |200    State: READY       Update at time 417ms
+C|0    |102  |3    |200    State: READY       Update at time 527ms
+X|0    |103  |3    |200    State: READY       Update at time 638ms
+Printing Wait Array
+Y|0    |104  |3    |200    State: BLOCKED     Update at time 750ms
+Z|0    |105  |3    |200    State: BLOCKED     Update at time 863ms
+--------------------------
+
+time 667ms: Process A started using the CPU [Q B C X]
+
+--- Printing at time 667ms
+Printing CPU
+A|0    |100  |2    |200    State: RUNNING     Update at time 767ms
+Printing Ready Queue
+B|0    |101  |3    |200    State: READY       Update at time 417ms
+C|0    |102  |3    |200    State: READY       Update at time 527ms
+X|0    |103  |3    |200    State: READY       Update at time 638ms
+Printing Wait Array
+Y|0    |104  |3    |200    State: BLOCKED     Update at time 750ms
+Z|0    |105  |3    |200    State: BLOCKED     Update at time 863ms
+--------------------------
+
+time 750ms: Process Y completed I/O; added to ready queue [Q B C X Y]
+
+--- Printing at time 750ms
+Printing CPU
+A|0    |100  |2    |200    State: RUNNING     Update at time 767ms
+Printing Ready Queue
+B|0    |101  |3    |200    State: READY       Update at time 417ms
+C|0    |102  |3    |200    State: READY       Update at time 527ms
+X|0    |103  |3    |200    State: READY       Update at time 638ms
+Y|0    |104  |3    |200    State: READY       Update at time 750ms
+Printing Wait Array
+Z|0    |105  |3    |200    State: BLOCKED     Update at time 863ms
+--------------------------
+
+time 767ms: Process A completed a CPU burst; 2 bursts to go [Q B C X Y]
+time 767ms: Process A switching out of CPU; will block on I/O until time 971ms [Q B C X Y]
+
+--- Printing at time 767ms
+Printing CPU
+A|0    |100  |2    |200    State: CS_REMOVE   Update at time 771ms
+Printing Ready Queue
+B|0    |101  |3    |200    State: READY       Update at time 417ms
+C|0    |102  |3    |200    State: READY       Update at time 527ms
+X|0    |103  |3    |200    State: READY       Update at time 638ms
+Y|0    |104  |3    |200    State: READY       Update at time 750ms
+Printing Wait Array
+Z|0    |105  |3    |200    State: BLOCKED     Update at time 863ms
+--------------------------
+
+
+wait time for B: 354ms
+
+
+--- Printing at time 771ms
+Empty CPU
+Printing Ready Queue
+C|0    |102  |3    |200    State: READY       Update at time 527ms
+X|0    |103  |3    |200    State: READY       Update at time 638ms
+Y|0    |104  |3    |200    State: READY       Update at time 750ms
+B|0    |101  |3    |200    State: CS_BRING    Update at time 775ms
+Printing Wait Array
+Z|0    |105  |3    |200    State: BLOCKED     Update at time 863ms
+A|0    |100  |2    |200    State: BLOCKED     Update at time 971ms
+--------------------------
+
+
+--- Printing at time 772ms
+Printing CPU
+B|0    |101  |3    |200    State: CS_BRING    Update at time 775ms
+Printing Ready Queue
+C|0    |102  |3    |200    State: READY       Update at time 527ms
+X|0    |103  |3    |200    State: READY       Update at time 638ms
+Y|0    |104  |3    |200    State: READY       Update at time 750ms
+Printing Wait Array
+Z|0    |105  |3    |200    State: BLOCKED     Update at time 863ms
+A|0    |100  |2    |200    State: BLOCKED     Update at time 971ms
+--------------------------
+
+time 775ms: Process B started using the CPU [Q C X Y]
+
+--- Printing at time 775ms
+Printing CPU
+B|0    |101  |2    |200    State: RUNNING     Update at time 876ms
+Printing Ready Queue
+C|0    |102  |3    |200    State: READY       Update at time 527ms
+X|0    |103  |3    |200    State: READY       Update at time 638ms
+Y|0    |104  |3    |200    State: READY       Update at time 750ms
+Printing Wait Array
+Z|0    |105  |3    |200    State: BLOCKED     Update at time 863ms
+A|0    |100  |2    |200    State: BLOCKED     Update at time 971ms
+--------------------------
+
+time 863ms: Process Z completed I/O; added to ready queue [Q C X Y Z]
+
+--- Printing at time 863ms
+Printing CPU
+B|0    |101  |2    |200    State: RUNNING     Update at time 876ms
+Printing Ready Queue
+C|0    |102  |3    |200    State: READY       Update at time 527ms
+X|0    |103  |3    |200    State: READY       Update at time 638ms
+Y|0    |104  |3    |200    State: READY       Update at time 750ms
+Z|0    |105  |3    |200    State: READY       Update at time 863ms
+Printing Wait Array
+A|0    |100  |2    |200    State: BLOCKED     Update at time 971ms
+--------------------------
+
+time 876ms: Process B completed a CPU burst; 2 bursts to go [Q C X Y Z]
+time 876ms: Process B switching out of CPU; will block on I/O until time 1080ms [Q C X Y Z]
+
+--- Printing at time 876ms
+Printing CPU
+B|0    |101  |2    |200    State: CS_REMOVE   Update at time 880ms
+Printing Ready Queue
+C|0    |102  |3    |200    State: READY       Update at time 527ms
+X|0    |103  |3    |200    State: READY       Update at time 638ms
+Y|0    |104  |3    |200    State: READY       Update at time 750ms
+Z|0    |105  |3    |200    State: READY       Update at time 863ms
+Printing Wait Array
+A|0    |100  |2    |200    State: BLOCKED     Update at time 971ms
+--------------------------
+
+
+wait time for C: 353ms
+
+
+--- Printing at time 880ms
+Empty CPU
+Printing Ready Queue
+X|0    |103  |3    |200    State: READY       Update at time 638ms
+Y|0    |104  |3    |200    State: READY       Update at time 750ms
+Z|0    |105  |3    |200    State: READY       Update at time 863ms
+C|0    |102  |3    |200    State: CS_BRING    Update at time 884ms
+Printing Wait Array
+A|0    |100  |2    |200    State: BLOCKED     Update at time 971ms
+B|0    |101  |2    |200    State: BLOCKED     Update at time 1080ms
+--------------------------
+
+
+--- Printing at time 881ms
+Printing CPU
+C|0    |102  |3    |200    State: CS_BRING    Update at time 884ms
+Printing Ready Queue
+X|0    |103  |3    |200    State: READY       Update at time 638ms
+Y|0    |104  |3    |200    State: READY       Update at time 750ms
+Z|0    |105  |3    |200    State: READY       Update at time 863ms
+Printing Wait Array
+A|0    |100  |2    |200    State: BLOCKED     Update at time 971ms
+B|0    |101  |2    |200    State: BLOCKED     Update at time 1080ms
+--------------------------
+
+time 884ms: Process C started using the CPU [Q X Y Z]
+
+--- Printing at time 884ms
+Printing CPU
+C|0    |102  |2    |200    State: RUNNING     Update at time 986ms
+Printing Ready Queue
+X|0    |103  |3    |200    State: READY       Update at time 638ms
+Y|0    |104  |3    |200    State: READY       Update at time 750ms
+Z|0    |105  |3    |200    State: READY       Update at time 863ms
+Printing Wait Array
+A|0    |100  |2    |200    State: BLOCKED     Update at time 971ms
+B|0    |101  |2    |200    State: BLOCKED     Update at time 1080ms
+--------------------------
+
+time 971ms: Process A completed I/O; added to ready queue [Q X Y Z A]
+
+--- Printing at time 971ms
+Printing CPU
+C|0    |102  |2    |200    State: RUNNING     Update at time 986ms
+Printing Ready Queue
+X|0    |103  |3    |200    State: READY       Update at time 638ms
+Y|0    |104  |3    |200    State: READY       Update at time 750ms
+Z|0    |105  |3    |200    State: READY       Update at time 863ms
+A|0    |100  |2    |200    State: READY       Update at time 971ms
+Printing Wait Array
+B|0    |101  |2    |200    State: BLOCKED     Update at time 1080ms
+--------------------------
+
+time 986ms: Process C completed a CPU burst; 2 bursts to go [Q X Y Z A]
+time 986ms: Process C switching out of CPU; will block on I/O until time 1190ms [Q X Y Z A]
+
+--- Printing at time 986ms
+Printing CPU
+C|0    |102  |2    |200    State: CS_REMOVE   Update at time 990ms
+Printing Ready Queue
+X|0    |103  |3    |200    State: READY       Update at time 638ms
+Y|0    |104  |3    |200    State: READY       Update at time 750ms
+Z|0    |105  |3    |200    State: READY       Update at time 863ms
+A|0    |100  |2    |200    State: READY       Update at time 971ms
+Printing Wait Array
+B|0    |101  |2    |200    State: BLOCKED     Update at time 1080ms
+--------------------------
+
+
+wait time for X: 352ms
+
+
+--- Printing at time 990ms
+Empty CPU
+Printing Ready Queue
+Y|0    |104  |3    |200    State: READY       Update at time 750ms
+Z|0    |105  |3    |200    State: READY       Update at time 863ms
+A|0    |100  |2    |200    State: READY       Update at time 971ms
+X|0    |103  |3    |200    State: CS_BRING    Update at time 994ms
+Printing Wait Array
+B|0    |101  |2    |200    State: BLOCKED     Update at time 1080ms
+C|0    |102  |2    |200    State: BLOCKED     Update at time 1190ms
+--------------------------
+
+
+--- Printing at time 991ms
+Printing CPU
+X|0    |103  |3    |200    State: CS_BRING    Update at time 994ms
+Printing Ready Queue
+Y|0    |104  |3    |200    State: READY       Update at time 750ms
+Z|0    |105  |3    |200    State: READY       Update at time 863ms
+A|0    |100  |2    |200    State: READY       Update at time 971ms
+Printing Wait Array
+B|0    |101  |2    |200    State: BLOCKED     Update at time 1080ms
+C|0    |102  |2    |200    State: BLOCKED     Update at time 1190ms
+--------------------------
+
+time 994ms: Process X started using the CPU [Q Y Z A]
+
+--- Printing at time 994ms
+Printing CPU
+X|0    |103  |2    |200    State: RUNNING     Update at time 1097ms
+Printing Ready Queue
+Y|0    |104  |3    |200    State: READY       Update at time 750ms
+Z|0    |105  |3    |200    State: READY       Update at time 863ms
+A|0    |100  |2    |200    State: READY       Update at time 971ms
+Printing Wait Array
+B|0    |101  |2    |200    State: BLOCKED     Update at time 1080ms
+C|0    |102  |2    |200    State: BLOCKED     Update at time 1190ms
+--------------------------
+
+time 1080ms: Process B completed I/O; added to ready queue [Q Y Z A B]
+
+--- Printing at time 1080ms
+Printing CPU
+X|0    |103  |2    |200    State: RUNNING     Update at time 1097ms
+Printing Ready Queue
+Y|0    |104  |3    |200    State: READY       Update at time 750ms
+Z|0    |105  |3    |200    State: READY       Update at time 863ms
+A|0    |100  |2    |200    State: READY       Update at time 971ms
+B|0    |101  |2    |200    State: READY       Update at time 1080ms
+Printing Wait Array
+C|0    |102  |2    |200    State: BLOCKED     Update at time 1190ms
+--------------------------
+
+time 1097ms: Process X completed a CPU burst; 2 bursts to go [Q Y Z A B]
+time 1097ms: Process X switching out of CPU; will block on I/O until time 1301ms [Q Y Z A B]
+
+--- Printing at time 1097ms
+Printing CPU
+X|0    |103  |2    |200    State: CS_REMOVE   Update at time 1101ms
+Printing Ready Queue
+Y|0    |104  |3    |200    State: READY       Update at time 750ms
+Z|0    |105  |3    |200    State: READY       Update at time 863ms
+A|0    |100  |2    |200    State: READY       Update at time 971ms
+B|0    |101  |2    |200    State: READY       Update at time 1080ms
+Printing Wait Array
+C|0    |102  |2    |200    State: BLOCKED     Update at time 1190ms
+--------------------------
+
+
+wait time for Y: 351ms
+
+
+--- Printing at time 1101ms
+Empty CPU
+Printing Ready Queue
+Z|0    |105  |3    |200    State: READY       Update at time 863ms
+A|0    |100  |2    |200    State: READY       Update at time 971ms
+B|0    |101  |2    |200    State: READY       Update at time 1080ms
+Y|0    |104  |3    |200    State: CS_BRING    Update at time 1105ms
+Printing Wait Array
+C|0    |102  |2    |200    State: BLOCKED     Update at time 1190ms
+X|0    |103  |2    |200    State: BLOCKED     Update at time 1301ms
+--------------------------
+
+
+--- Printing at time 1102ms
+Printing CPU
+Y|0    |104  |3    |200    State: CS_BRING    Update at time 1105ms
+Printing Ready Queue
+Z|0    |105  |3    |200    State: READY       Update at time 863ms
+A|0    |100  |2    |200    State: READY       Update at time 971ms
+B|0    |101  |2    |200    State: READY       Update at time 1080ms
+Printing Wait Array
+C|0    |102  |2    |200    State: BLOCKED     Update at time 1190ms
+X|0    |103  |2    |200    State: BLOCKED     Update at time 1301ms
+--------------------------
+
+time 1105ms: Process Y started using the CPU [Q Z A B]
+
+--- Printing at time 1105ms
+Printing CPU
+Y|0    |104  |2    |200    State: RUNNING     Update at time 1209ms
+Printing Ready Queue
+Z|0    |105  |3    |200    State: READY       Update at time 863ms
+A|0    |100  |2    |200    State: READY       Update at time 971ms
+B|0    |101  |2    |200    State: READY       Update at time 1080ms
+Printing Wait Array
+C|0    |102  |2    |200    State: BLOCKED     Update at time 1190ms
+X|0    |103  |2    |200    State: BLOCKED     Update at time 1301ms
+--------------------------
+
+time 1190ms: Process C completed I/O; added to ready queue [Q Z A B C]
+
+--- Printing at time 1190ms
+Printing CPU
+Y|0    |104  |2    |200    State: RUNNING     Update at time 1209ms
+Printing Ready Queue
+Z|0    |105  |3    |200    State: READY       Update at time 863ms
+A|0    |100  |2    |200    State: READY       Update at time 971ms
+B|0    |101  |2    |200    State: READY       Update at time 1080ms
+C|0    |102  |2    |200    State: READY       Update at time 1190ms
+Printing Wait Array
+X|0    |103  |2    |200    State: BLOCKED     Update at time 1301ms
+--------------------------
+
+time 1209ms: Process Y completed a CPU burst; 2 bursts to go [Q Z A B C]
+time 1209ms: Process Y switching out of CPU; will block on I/O until time 1413ms [Q Z A B C]
+
+--- Printing at time 1209ms
+Printing CPU
+Y|0    |104  |2    |200    State: CS_REMOVE   Update at time 1213ms
+Printing Ready Queue
+Z|0    |105  |3    |200    State: READY       Update at time 863ms
+A|0    |100  |2    |200    State: READY       Update at time 971ms
+B|0    |101  |2    |200    State: READY       Update at time 1080ms
+C|0    |102  |2    |200    State: READY       Update at time 1190ms
+Printing Wait Array
+X|0    |103  |2    |200    State: BLOCKED     Update at time 1301ms
+--------------------------
+
+
+wait time for Z: 350ms
+
+
+--- Printing at time 1213ms
+Empty CPU
+Printing Ready Queue
+A|0    |100  |2    |200    State: READY       Update at time 971ms
+B|0    |101  |2    |200    State: READY       Update at time 1080ms
+C|0    |102  |2    |200    State: READY       Update at time 1190ms
+Z|0    |105  |3    |200    State: CS_BRING    Update at time 1217ms
+Printing Wait Array
+X|0    |103  |2    |200    State: BLOCKED     Update at time 1301ms
+Y|0    |104  |2    |200    State: BLOCKED     Update at time 1413ms
+--------------------------
+
+
+--- Printing at time 1214ms
+Printing CPU
+Z|0    |105  |3    |200    State: CS_BRING    Update at time 1217ms
+Printing Ready Queue
+A|0    |100  |2    |200    State: READY       Update at time 971ms
+B|0    |101  |2    |200    State: READY       Update at time 1080ms
+C|0    |102  |2    |200    State: READY       Update at time 1190ms
+Printing Wait Array
+X|0    |103  |2    |200    State: BLOCKED     Update at time 1301ms
+Y|0    |104  |2    |200    State: BLOCKED     Update at time 1413ms
+--------------------------
+
+time 1217ms: Process Z started using the CPU [Q A B C]
+
+--- Printing at time 1217ms
+Printing CPU
+Z|0    |105  |2    |200    State: RUNNING     Update at time 1322ms
+Printing Ready Queue
+A|0    |100  |2    |200    State: READY       Update at time 971ms
+B|0    |101  |2    |200    State: READY       Update at time 1080ms
+C|0    |102  |2    |200    State: READY       Update at time 1190ms
+Printing Wait Array
+X|0    |103  |2    |200    State: BLOCKED     Update at time 1301ms
+Y|0    |104  |2    |200    State: BLOCKED     Update at time 1413ms
+--------------------------
+
+time 1301ms: Process X completed I/O; added to ready queue [Q A B C X]
+
+--- Printing at time 1301ms
+Printing CPU
+Z|0    |105  |2    |200    State: RUNNING     Update at time 1322ms
+Printing Ready Queue
+A|0    |100  |2    |200    State: READY       Update at time 971ms
+B|0    |101  |2    |200    State: READY       Update at time 1080ms
+C|0    |102  |2    |200    State: READY       Update at time 1190ms
+X|0    |103  |2    |200    State: READY       Update at time 1301ms
+Printing Wait Array
+Y|0    |104  |2    |200    State: BLOCKED     Update at time 1413ms
+--------------------------
+
+time 1322ms: Process Z completed a CPU burst; 2 bursts to go [Q A B C X]
+time 1322ms: Process Z switching out of CPU; will block on I/O until time 1526ms [Q A B C X]
+
+--- Printing at time 1322ms
+Printing CPU
+Z|0    |105  |2    |200    State: CS_REMOVE   Update at time 1326ms
+Printing Ready Queue
+A|0    |100  |2    |200    State: READY       Update at time 971ms
+B|0    |101  |2    |200    State: READY       Update at time 1080ms
+C|0    |102  |2    |200    State: READY       Update at time 1190ms
+X|0    |103  |2    |200    State: READY       Update at time 1301ms
+Printing Wait Array
+Y|0    |104  |2    |200    State: BLOCKED     Update at time 1413ms
+--------------------------
+
+
+wait time for A: 355ms
+
+
+--- Printing at time 1326ms
+Empty CPU
+Printing Ready Queue
+B|0    |101  |2    |200    State: READY       Update at time 1080ms
+C|0    |102  |2    |200    State: READY       Update at time 1190ms
+X|0    |103  |2    |200    State: READY       Update at time 1301ms
+A|0    |100  |2    |200    State: CS_BRING    Update at time 1330ms
+Printing Wait Array
+Y|0    |104  |2    |200    State: BLOCKED     Update at time 1413ms
+Z|0    |105  |2    |200    State: BLOCKED     Update at time 1526ms
+--------------------------
+
+
+--- Printing at time 1327ms
+Printing CPU
+A|0    |100  |2    |200    State: CS_BRING    Update at time 1330ms
+Printing Ready Queue
+B|0    |101  |2    |200    State: READY       Update at time 1080ms
+C|0    |102  |2    |200    State: READY       Update at time 1190ms
+X|0    |103  |2    |200    State: READY       Update at time 1301ms
+Printing Wait Array
+Y|0    |104  |2    |200    State: BLOCKED     Update at time 1413ms
+Z|0    |105  |2    |200    State: BLOCKED     Update at time 1526ms
+--------------------------
+
+time 1330ms: Process A started using the CPU [Q B C X]
+
+--- Printing at time 1330ms
+Printing CPU
+A|0    |100  |1    |200    State: RUNNING     Update at time 1430ms
+Printing Ready Queue
+B|0    |101  |2    |200    State: READY       Update at time 1080ms
+C|0    |102  |2    |200    State: READY       Update at time 1190ms
+X|0    |103  |2    |200    State: READY       Update at time 1301ms
+Printing Wait Array
+Y|0    |104  |2    |200    State: BLOCKED     Update at time 1413ms
+Z|0    |105  |2    |200    State: BLOCKED     Update at time 1526ms
+--------------------------
+
+time 1413ms: Process Y completed I/O; added to ready queue [Q B C X Y]
+
+--- Printing at time 1413ms
+Printing CPU
+A|0    |100  |1    |200    State: RUNNING     Update at time 1430ms
+Printing Ready Queue
+B|0    |101  |2    |200    State: READY       Update at time 1080ms
+C|0    |102  |2    |200    State: READY       Update at time 1190ms
+X|0    |103  |2    |200    State: READY       Update at time 1301ms
+Y|0    |104  |2    |200    State: READY       Update at time 1413ms
+Printing Wait Array
+Z|0    |105  |2    |200    State: BLOCKED     Update at time 1526ms
+--------------------------
+
+time 1430ms: Process A completed a CPU burst; 1 burst to go [Q B C X Y]
+time 1430ms: Process A switching out of CPU; will block on I/O until time 1634ms [Q B C X Y]
+
+--- Printing at time 1430ms
+Printing CPU
+A|0    |100  |1    |200    State: CS_REMOVE   Update at time 1434ms
+Printing Ready Queue
+B|0    |101  |2    |200    State: READY       Update at time 1080ms
+C|0    |102  |2    |200    State: READY       Update at time 1190ms
+X|0    |103  |2    |200    State: READY       Update at time 1301ms
+Y|0    |104  |2    |200    State: READY       Update at time 1413ms
+Printing Wait Array
+Z|0    |105  |2    |200    State: BLOCKED     Update at time 1526ms
+--------------------------
+
+
+wait time for B: 354ms
+
+
+--- Printing at time 1434ms
+Empty CPU
+Printing Ready Queue
+C|0    |102  |2    |200    State: READY       Update at time 1190ms
+X|0    |103  |2    |200    State: READY       Update at time 1301ms
+Y|0    |104  |2    |200    State: READY       Update at time 1413ms
+B|0    |101  |2    |200    State: CS_BRING    Update at time 1438ms
+Printing Wait Array
+Z|0    |105  |2    |200    State: BLOCKED     Update at time 1526ms
+A|0    |100  |1    |200    State: BLOCKED     Update at time 1634ms
+--------------------------
+
+
+--- Printing at time 1435ms
+Printing CPU
+B|0    |101  |2    |200    State: CS_BRING    Update at time 1438ms
+Printing Ready Queue
+C|0    |102  |2    |200    State: READY       Update at time 1190ms
+X|0    |103  |2    |200    State: READY       Update at time 1301ms
+Y|0    |104  |2    |200    State: READY       Update at time 1413ms
+Printing Wait Array
+Z|0    |105  |2    |200    State: BLOCKED     Update at time 1526ms
+A|0    |100  |1    |200    State: BLOCKED     Update at time 1634ms
+--------------------------
+
+time 1438ms: Process B started using the CPU [Q C X Y]
+
+--- Printing at time 1438ms
+Printing CPU
+B|0    |101  |1    |200    State: RUNNING     Update at time 1539ms
+Printing Ready Queue
+C|0    |102  |2    |200    State: READY       Update at time 1190ms
+X|0    |103  |2    |200    State: READY       Update at time 1301ms
+Y|0    |104  |2    |200    State: READY       Update at time 1413ms
+Printing Wait Array
+Z|0    |105  |2    |200    State: BLOCKED     Update at time 1526ms
+A|0    |100  |1    |200    State: BLOCKED     Update at time 1634ms
+--------------------------
+
+time 1526ms: Process Z completed I/O; added to ready queue [Q C X Y Z]
+
+--- Printing at time 1526ms
+Printing CPU
+B|0    |101  |1    |200    State: RUNNING     Update at time 1539ms
+Printing Ready Queue
+C|0    |102  |2    |200    State: READY       Update at time 1190ms
+X|0    |103  |2    |200    State: READY       Update at time 1301ms
+Y|0    |104  |2    |200    State: READY       Update at time 1413ms
+Z|0    |105  |2    |200    State: READY       Update at time 1526ms
+Printing Wait Array
+A|0    |100  |1    |200    State: BLOCKED     Update at time 1634ms
+--------------------------
+
+time 1539ms: Process B completed a CPU burst; 1 burst to go [Q C X Y Z]
+time 1539ms: Process B switching out of CPU; will block on I/O until time 1743ms [Q C X Y Z]
+
+--- Printing at time 1539ms
+Printing CPU
+B|0    |101  |1    |200    State: CS_REMOVE   Update at time 1543ms
+Printing Ready Queue
+C|0    |102  |2    |200    State: READY       Update at time 1190ms
+X|0    |103  |2    |200    State: READY       Update at time 1301ms
+Y|0    |104  |2    |200    State: READY       Update at time 1413ms
+Z|0    |105  |2    |200    State: READY       Update at time 1526ms
+Printing Wait Array
+A|0    |100  |1    |200    State: BLOCKED     Update at time 1634ms
+--------------------------
+
+
+wait time for C: 353ms
+
+
+--- Printing at time 1543ms
+Empty CPU
+Printing Ready Queue
+X|0    |103  |2    |200    State: READY       Update at time 1301ms
+Y|0    |104  |2    |200    State: READY       Update at time 1413ms
+Z|0    |105  |2    |200    State: READY       Update at time 1526ms
+C|0    |102  |2    |200    State: CS_BRING    Update at time 1547ms
+Printing Wait Array
+A|0    |100  |1    |200    State: BLOCKED     Update at time 1634ms
+B|0    |101  |1    |200    State: BLOCKED     Update at time 1743ms
+--------------------------
+
+
+--- Printing at time 1544ms
+Printing CPU
+C|0    |102  |2    |200    State: CS_BRING    Update at time 1547ms
+Printing Ready Queue
+X|0    |103  |2    |200    State: READY       Update at time 1301ms
+Y|0    |104  |2    |200    State: READY       Update at time 1413ms
+Z|0    |105  |2    |200    State: READY       Update at time 1526ms
+Printing Wait Array
+A|0    |100  |1    |200    State: BLOCKED     Update at time 1634ms
+B|0    |101  |1    |200    State: BLOCKED     Update at time 1743ms
+--------------------------
+
+time 1547ms: Process C started using the CPU [Q X Y Z]
+
+--- Printing at time 1547ms
+Printing CPU
+C|0    |102  |1    |200    State: RUNNING     Update at time 1649ms
+Printing Ready Queue
+X|0    |103  |2    |200    State: READY       Update at time 1301ms
+Y|0    |104  |2    |200    State: READY       Update at time 1413ms
+Z|0    |105  |2    |200    State: READY       Update at time 1526ms
+Printing Wait Array
+A|0    |100  |1    |200    State: BLOCKED     Update at time 1634ms
+B|0    |101  |1    |200    State: BLOCKED     Update at time 1743ms
+--------------------------
+
+time 1634ms: Process A completed I/O; added to ready queue [Q X Y Z A]
+
+--- Printing at time 1634ms
+Printing CPU
+C|0    |102  |1    |200    State: RUNNING     Update at time 1649ms
+Printing Ready Queue
+X|0    |103  |2    |200    State: READY       Update at time 1301ms
+Y|0    |104  |2    |200    State: READY       Update at time 1413ms
+Z|0    |105  |2    |200    State: READY       Update at time 1526ms
+A|0    |100  |1    |200    State: READY       Update at time 1634ms
+Printing Wait Array
+B|0    |101  |1    |200    State: BLOCKED     Update at time 1743ms
+--------------------------
+
+time 1649ms: Process C completed a CPU burst; 1 burst to go [Q X Y Z A]
+time 1649ms: Process C switching out of CPU; will block on I/O until time 1853ms [Q X Y Z A]
+
+--- Printing at time 1649ms
+Printing CPU
+C|0    |102  |1    |200    State: CS_REMOVE   Update at time 1653ms
+Printing Ready Queue
+X|0    |103  |2    |200    State: READY       Update at time 1301ms
+Y|0    |104  |2    |200    State: READY       Update at time 1413ms
+Z|0    |105  |2    |200    State: READY       Update at time 1526ms
+A|0    |100  |1    |200    State: READY       Update at time 1634ms
+Printing Wait Array
+B|0    |101  |1    |200    State: BLOCKED     Update at time 1743ms
+--------------------------
+
+
+wait time for X: 352ms
+
+
+--- Printing at time 1653ms
+Empty CPU
+Printing Ready Queue
+Y|0    |104  |2    |200    State: READY       Update at time 1413ms
+Z|0    |105  |2    |200    State: READY       Update at time 1526ms
+A|0    |100  |1    |200    State: READY       Update at time 1634ms
+X|0    |103  |2    |200    State: CS_BRING    Update at time 1657ms
+Printing Wait Array
+B|0    |101  |1    |200    State: BLOCKED     Update at time 1743ms
+C|0    |102  |1    |200    State: BLOCKED     Update at time 1853ms
+--------------------------
+
+
+--- Printing at time 1654ms
+Printing CPU
+X|0    |103  |2    |200    State: CS_BRING    Update at time 1657ms
+Printing Ready Queue
+Y|0    |104  |2    |200    State: READY       Update at time 1413ms
+Z|0    |105  |2    |200    State: READY       Update at time 1526ms
+A|0    |100  |1    |200    State: READY       Update at time 1634ms
+Printing Wait Array
+B|0    |101  |1    |200    State: BLOCKED     Update at time 1743ms
+C|0    |102  |1    |200    State: BLOCKED     Update at time 1853ms
+--------------------------
+
+time 1657ms: Process X started using the CPU [Q Y Z A]
+
+--- Printing at time 1657ms
+Printing CPU
+X|0    |103  |1    |200    State: RUNNING     Update at time 1760ms
+Printing Ready Queue
+Y|0    |104  |2    |200    State: READY       Update at time 1413ms
+Z|0    |105  |2    |200    State: READY       Update at time 1526ms
+A|0    |100  |1    |200    State: READY       Update at time 1634ms
+Printing Wait Array
+B|0    |101  |1    |200    State: BLOCKED     Update at time 1743ms
+C|0    |102  |1    |200    State: BLOCKED     Update at time 1853ms
+--------------------------
+
+time 1743ms: Process B completed I/O; added to ready queue [Q Y Z A B]
+
+--- Printing at time 1743ms
+Printing CPU
+X|0    |103  |1    |200    State: RUNNING     Update at time 1760ms
+Printing Ready Queue
+Y|0    |104  |2    |200    State: READY       Update at time 1413ms
+Z|0    |105  |2    |200    State: READY       Update at time 1526ms
+A|0    |100  |1    |200    State: READY       Update at time 1634ms
+B|0    |101  |1    |200    State: READY       Update at time 1743ms
+Printing Wait Array
+C|0    |102  |1    |200    State: BLOCKED     Update at time 1853ms
+--------------------------
+
+time 1760ms: Process X completed a CPU burst; 1 burst to go [Q Y Z A B]
+time 1760ms: Process X switching out of CPU; will block on I/O until time 1964ms [Q Y Z A B]
+
+--- Printing at time 1760ms
+Printing CPU
+X|0    |103  |1    |200    State: CS_REMOVE   Update at time 1764ms
+Printing Ready Queue
+Y|0    |104  |2    |200    State: READY       Update at time 1413ms
+Z|0    |105  |2    |200    State: READY       Update at time 1526ms
+A|0    |100  |1    |200    State: READY       Update at time 1634ms
+B|0    |101  |1    |200    State: READY       Update at time 1743ms
+Printing Wait Array
+C|0    |102  |1    |200    State: BLOCKED     Update at time 1853ms
+--------------------------
+
+
+wait time for Y: 351ms
+
+
+--- Printing at time 1764ms
+Empty CPU
+Printing Ready Queue
+Z|0    |105  |2    |200    State: READY       Update at time 1526ms
+A|0    |100  |1    |200    State: READY       Update at time 1634ms
+B|0    |101  |1    |200    State: READY       Update at time 1743ms
+Y|0    |104  |2    |200    State: CS_BRING    Update at time 1768ms
+Printing Wait Array
+C|0    |102  |1    |200    State: BLOCKED     Update at time 1853ms
+X|0    |103  |1    |200    State: BLOCKED     Update at time 1964ms
+--------------------------
+
+
+--- Printing at time 1765ms
+Printing CPU
+Y|0    |104  |2    |200    State: CS_BRING    Update at time 1768ms
+Printing Ready Queue
+Z|0    |105  |2    |200    State: READY       Update at time 1526ms
+A|0    |100  |1    |200    State: READY       Update at time 1634ms
+B|0    |101  |1    |200    State: READY       Update at time 1743ms
+Printing Wait Array
+C|0    |102  |1    |200    State: BLOCKED     Update at time 1853ms
+X|0    |103  |1    |200    State: BLOCKED     Update at time 1964ms
+--------------------------
+
+time 1768ms: Process Y started using the CPU [Q Z A B]
+
+--- Printing at time 1768ms
+Printing CPU
+Y|0    |104  |1    |200    State: RUNNING     Update at time 1872ms
+Printing Ready Queue
+Z|0    |105  |2    |200    State: READY       Update at time 1526ms
+A|0    |100  |1    |200    State: READY       Update at time 1634ms
+B|0    |101  |1    |200    State: READY       Update at time 1743ms
+Printing Wait Array
+C|0    |102  |1    |200    State: BLOCKED     Update at time 1853ms
+X|0    |103  |1    |200    State: BLOCKED     Update at time 1964ms
+--------------------------
+
+time 1853ms: Process C completed I/O; added to ready queue [Q Z A B C]
+
+--- Printing at time 1853ms
+Printing CPU
+Y|0    |104  |1    |200    State: RUNNING     Update at time 1872ms
+Printing Ready Queue
+Z|0    |105  |2    |200    State: READY       Update at time 1526ms
+A|0    |100  |1    |200    State: READY       Update at time 1634ms
+B|0    |101  |1    |200    State: READY       Update at time 1743ms
+C|0    |102  |1    |200    State: READY       Update at time 1853ms
+Printing Wait Array
+X|0    |103  |1    |200    State: BLOCKED     Update at time 1964ms
+--------------------------
+
+time 1872ms: Process Y completed a CPU burst; 1 burst to go [Q Z A B C]
+time 1872ms: Process Y switching out of CPU; will block on I/O until time 2076ms [Q Z A B C]
+
+--- Printing at time 1872ms
+Printing CPU
+Y|0    |104  |1    |200    State: CS_REMOVE   Update at time 1876ms
+Printing Ready Queue
+Z|0    |105  |2    |200    State: READY       Update at time 1526ms
+A|0    |100  |1    |200    State: READY       Update at time 1634ms
+B|0    |101  |1    |200    State: READY       Update at time 1743ms
+C|0    |102  |1    |200    State: READY       Update at time 1853ms
+Printing Wait Array
+X|0    |103  |1    |200    State: BLOCKED     Update at time 1964ms
+--------------------------
+
+
+wait time for Z: 350ms
+
+
+--- Printing at time 1876ms
+Empty CPU
+Printing Ready Queue
+A|0    |100  |1    |200    State: READY       Update at time 1634ms
+B|0    |101  |1    |200    State: READY       Update at time 1743ms
+C|0    |102  |1    |200    State: READY       Update at time 1853ms
+Z|0    |105  |2    |200    State: CS_BRING    Update at time 1880ms
+Printing Wait Array
+X|0    |103  |1    |200    State: BLOCKED     Update at time 1964ms
+Y|0    |104  |1    |200    State: BLOCKED     Update at time 2076ms
+--------------------------
+
+
+--- Printing at time 1877ms
+Printing CPU
+Z|0    |105  |2    |200    State: CS_BRING    Update at time 1880ms
+Printing Ready Queue
+A|0    |100  |1    |200    State: READY       Update at time 1634ms
+B|0    |101  |1    |200    State: READY       Update at time 1743ms
+C|0    |102  |1    |200    State: READY       Update at time 1853ms
+Printing Wait Array
+X|0    |103  |1    |200    State: BLOCKED     Update at time 1964ms
+Y|0    |104  |1    |200    State: BLOCKED     Update at time 2076ms
+--------------------------
+
+time 1880ms: Process Z started using the CPU [Q A B C]
+
+--- Printing at time 1880ms
+Printing CPU
+Z|0    |105  |1    |200    State: RUNNING     Update at time 1985ms
+Printing Ready Queue
+A|0    |100  |1    |200    State: READY       Update at time 1634ms
+B|0    |101  |1    |200    State: READY       Update at time 1743ms
+C|0    |102  |1    |200    State: READY       Update at time 1853ms
+Printing Wait Array
+X|0    |103  |1    |200    State: BLOCKED     Update at time 1964ms
+Y|0    |104  |1    |200    State: BLOCKED     Update at time 2076ms
+--------------------------
+
+time 1964ms: Process X completed I/O; added to ready queue [Q A B C X]
+
+--- Printing at time 1964ms
+Printing CPU
+Z|0    |105  |1    |200    State: RUNNING     Update at time 1985ms
+Printing Ready Queue
+A|0    |100  |1    |200    State: READY       Update at time 1634ms
+B|0    |101  |1    |200    State: READY       Update at time 1743ms
+C|0    |102  |1    |200    State: READY       Update at time 1853ms
+X|0    |103  |1    |200    State: READY       Update at time 1964ms
+Printing Wait Array
+Y|0    |104  |1    |200    State: BLOCKED     Update at time 2076ms
+--------------------------
+
+time 1985ms: Process Z completed a CPU burst; 1 burst to go [Q A B C X]
+time 1985ms: Process Z switching out of CPU; will block on I/O until time 2189ms [Q A B C X]
+
+--- Printing at time 1985ms
+Printing CPU
+Z|0    |105  |1    |200    State: CS_REMOVE   Update at time 1989ms
+Printing Ready Queue
+A|0    |100  |1    |200    State: READY       Update at time 1634ms
+B|0    |101  |1    |200    State: READY       Update at time 1743ms
+C|0    |102  |1    |200    State: READY       Update at time 1853ms
+X|0    |103  |1    |200    State: READY       Update at time 1964ms
+Printing Wait Array
+Y|0    |104  |1    |200    State: BLOCKED     Update at time 2076ms
+--------------------------
+
+
+wait time for A: 355ms
+
+
+--- Printing at time 1989ms
+Empty CPU
+Printing Ready Queue
+B|0    |101  |1    |200    State: READY       Update at time 1743ms
+C|0    |102  |1    |200    State: READY       Update at time 1853ms
+X|0    |103  |1    |200    State: READY       Update at time 1964ms
+A|0    |100  |1    |200    State: CS_BRING    Update at time 1993ms
+Printing Wait Array
+Y|0    |104  |1    |200    State: BLOCKED     Update at time 2076ms
+Z|0    |105  |1    |200    State: BLOCKED     Update at time 2189ms
+--------------------------
+
+
+--- Printing at time 1990ms
+Printing CPU
+A|0    |100  |1    |200    State: CS_BRING    Update at time 1993ms
+Printing Ready Queue
+B|0    |101  |1    |200    State: READY       Update at time 1743ms
+C|0    |102  |1    |200    State: READY       Update at time 1853ms
+X|0    |103  |1    |200    State: READY       Update at time 1964ms
+Printing Wait Array
+Y|0    |104  |1    |200    State: BLOCKED     Update at time 2076ms
+Z|0    |105  |1    |200    State: BLOCKED     Update at time 2189ms
+--------------------------
+
+time 1993ms: Process A started using the CPU [Q B C X]
+
+--- Printing at time 1993ms
+Printing CPU
+A|0    |100  |0    |200    State: RUNNING     Update at time 2093ms
+Printing Ready Queue
+B|0    |101  |1    |200    State: READY       Update at time 1743ms
+C|0    |102  |1    |200    State: READY       Update at time 1853ms
+X|0    |103  |1    |200    State: READY       Update at time 1964ms
+Printing Wait Array
+Y|0    |104  |1    |200    State: BLOCKED     Update at time 2076ms
+Z|0    |105  |1    |200    State: BLOCKED     Update at time 2189ms
+--------------------------
+
+time 2076ms: Process Y completed I/O; added to ready queue [Q B C X Y]
+
+--- Printing at time 2076ms
+Printing CPU
+A|0    |100  |0    |200    State: RUNNING     Update at time 2093ms
+Printing Ready Queue
+B|0    |101  |1    |200    State: READY       Update at time 1743ms
+C|0    |102  |1    |200    State: READY       Update at time 1853ms
+X|0    |103  |1    |200    State: READY       Update at time 1964ms
+Y|0    |104  |1    |200    State: READY       Update at time 2076ms
+Printing Wait Array
+Z|0    |105  |1    |200    State: BLOCKED     Update at time 2189ms
+--------------------------
+
+time 2093ms: Process A terminated [Q B C X Y]
+
+--- Printing at time 2093ms
+Printing CPU
+A|0    |100  |0    |200    State: CS_REMOVE   Update at time 2097ms
+Printing Ready Queue
+B|0    |101  |1    |200    State: READY       Update at time 1743ms
+C|0    |102  |1    |200    State: READY       Update at time 1853ms
+X|0    |103  |1    |200    State: READY       Update at time 1964ms
+Y|0    |104  |1    |200    State: READY       Update at time 2076ms
+Printing Wait Array
+Z|0    |105  |1    |200    State: BLOCKED     Update at time 2189ms
+--------------------------
+
+
+wait time for B: 354ms
+
+
+--- Printing at time 2097ms
+Empty CPU
+Printing Ready Queue
+C|0    |102  |1    |200    State: READY       Update at time 1853ms
+X|0    |103  |1    |200    State: READY       Update at time 1964ms
+Y|0    |104  |1    |200    State: READY       Update at time 2076ms
+B|0    |101  |1    |200    State: CS_BRING    Update at time 2101ms
+Printing Wait Array
+Z|0    |105  |1    |200    State: BLOCKED     Update at time 2189ms
+--------------------------
+
+
+--- Printing at time 2098ms
+Printing CPU
+B|0    |101  |1    |200    State: CS_BRING    Update at time 2101ms
+Printing Ready Queue
+C|0    |102  |1    |200    State: READY       Update at time 1853ms
+X|0    |103  |1    |200    State: READY       Update at time 1964ms
+Y|0    |104  |1    |200    State: READY       Update at time 2076ms
+Printing Wait Array
+Z|0    |105  |1    |200    State: BLOCKED     Update at time 2189ms
+--------------------------
+
+time 2101ms: Process B started using the CPU [Q C X Y]
+
+--- Printing at time 2101ms
+Printing CPU
+B|0    |101  |0    |200    State: RUNNING     Update at time 2202ms
+Printing Ready Queue
+C|0    |102  |1    |200    State: READY       Update at time 1853ms
+X|0    |103  |1    |200    State: READY       Update at time 1964ms
+Y|0    |104  |1    |200    State: READY       Update at time 2076ms
+Printing Wait Array
+Z|0    |105  |1    |200    State: BLOCKED     Update at time 2189ms
+--------------------------
+
+time 2189ms: Process Z completed I/O; added to ready queue [Q C X Y Z]
+
+--- Printing at time 2189ms
+Printing CPU
+B|0    |101  |0    |200    State: RUNNING     Update at time 2202ms
+Printing Ready Queue
+C|0    |102  |1    |200    State: READY       Update at time 1853ms
+X|0    |103  |1    |200    State: READY       Update at time 1964ms
+Y|0    |104  |1    |200    State: READY       Update at time 2076ms
+Z|0    |105  |1    |200    State: READY       Update at time 2189ms
+Empty Wait Array
+--------------------------
+
+time 2202ms: Process B terminated [Q C X Y Z]
+
+--- Printing at time 2202ms
+Printing CPU
+B|0    |101  |0    |200    State: CS_REMOVE   Update at time 2206ms
+Printing Ready Queue
+C|0    |102  |1    |200    State: READY       Update at time 1853ms
+X|0    |103  |1    |200    State: READY       Update at time 1964ms
+Y|0    |104  |1    |200    State: READY       Update at time 2076ms
+Z|0    |105  |1    |200    State: READY       Update at time 2189ms
+Empty Wait Array
+--------------------------
+
+
+wait time for C: 353ms
+
+
+--- Printing at time 2206ms
+Empty CPU
+Printing Ready Queue
+X|0    |103  |1    |200    State: READY       Update at time 1964ms
+Y|0    |104  |1    |200    State: READY       Update at time 2076ms
+Z|0    |105  |1    |200    State: READY       Update at time 2189ms
+C|0    |102  |1    |200    State: CS_BRING    Update at time 2210ms
+Empty Wait Array
+--------------------------
+
+
+--- Printing at time 2207ms
+Printing CPU
+C|0    |102  |1    |200    State: CS_BRING    Update at time 2210ms
+Printing Ready Queue
+X|0    |103  |1    |200    State: READY       Update at time 1964ms
+Y|0    |104  |1    |200    State: READY       Update at time 2076ms
+Z|0    |105  |1    |200    State: READY       Update at time 2189ms
+Empty Wait Array
+--------------------------
+
+time 2210ms: Process C started using the CPU [Q X Y Z]
+
+--- Printing at time 2210ms
+Printing CPU
+C|0    |102  |0    |200    State: RUNNING     Update at time 2312ms
+Printing Ready Queue
+X|0    |103  |1    |200    State: READY       Update at time 1964ms
+Y|0    |104  |1    |200    State: READY       Update at time 2076ms
+Z|0    |105  |1    |200    State: READY       Update at time 2189ms
+Empty Wait Array
+--------------------------
+
+time 2312ms: Process C terminated [Q X Y Z]
+
+--- Printing at time 2312ms
+Printing CPU
+C|0    |102  |0    |200    State: CS_REMOVE   Update at time 2316ms
+Printing Ready Queue
+X|0    |103  |1    |200    State: READY       Update at time 1964ms
+Y|0    |104  |1    |200    State: READY       Update at time 2076ms
+Z|0    |105  |1    |200    State: READY       Update at time 2189ms
+Empty Wait Array
+--------------------------
+
+
+wait time for X: 352ms
+
+
+--- Printing at time 2316ms
+Empty CPU
+Printing Ready Queue
+Y|0    |104  |1    |200    State: READY       Update at time 2076ms
+Z|0    |105  |1    |200    State: READY       Update at time 2189ms
+X|0    |103  |1    |200    State: CS_BRING    Update at time 2320ms
+Empty Wait Array
+--------------------------
+
+
+--- Printing at time 2317ms
+Printing CPU
+X|0    |103  |1    |200    State: CS_BRING    Update at time 2320ms
+Printing Ready Queue
+Y|0    |104  |1    |200    State: READY       Update at time 2076ms
+Z|0    |105  |1    |200    State: READY       Update at time 2189ms
+Empty Wait Array
+--------------------------
+
+time 2320ms: Process X started using the CPU [Q Y Z]
+
+--- Printing at time 2320ms
+Printing CPU
+X|0    |103  |0    |200    State: RUNNING     Update at time 2423ms
+Printing Ready Queue
+Y|0    |104  |1    |200    State: READY       Update at time 2076ms
+Z|0    |105  |1    |200    State: READY       Update at time 2189ms
+Empty Wait Array
+--------------------------
+
+time 2423ms: Process X terminated [Q Y Z]
+
+--- Printing at time 2423ms
+Printing CPU
+X|0    |103  |0    |200    State: CS_REMOVE   Update at time 2427ms
+Printing Ready Queue
+Y|0    |104  |1    |200    State: READY       Update at time 2076ms
+Z|0    |105  |1    |200    State: READY       Update at time 2189ms
+Empty Wait Array
+--------------------------
+
+
+wait time for Y: 351ms
+
+
+--- Printing at time 2427ms
+Empty CPU
+Printing Ready Queue
+Z|0    |105  |1    |200    State: READY       Update at time 2189ms
+Y|0    |104  |1    |200    State: CS_BRING    Update at time 2431ms
+Empty Wait Array
+--------------------------
+
+
+--- Printing at time 2428ms
+Printing CPU
+Y|0    |104  |1    |200    State: CS_BRING    Update at time 2431ms
+Printing Ready Queue
+Z|0    |105  |1    |200    State: READY       Update at time 2189ms
+Empty Wait Array
+--------------------------
+
+time 2431ms: Process Y started using the CPU [Q Z]
+
+--- Printing at time 2431ms
+Printing CPU
+Y|0    |104  |0    |200    State: RUNNING     Update at time 2535ms
+Printing Ready Queue
+Z|0    |105  |1    |200    State: READY       Update at time 2189ms
+Empty Wait Array
+--------------------------
+
+time 2535ms: Process Y terminated [Q Z]
+
+--- Printing at time 2535ms
+Printing CPU
+Y|0    |104  |0    |200    State: CS_REMOVE   Update at time 2539ms
+Printing Ready Queue
+Z|0    |105  |1    |200    State: READY       Update at time 2189ms
+Empty Wait Array
+--------------------------
+
+
+wait time for Z: 350ms
+
+
+--- Printing at time 2539ms
+Empty CPU
+Printing Ready Queue
+Z|0    |105  |1    |200    State: CS_BRING    Update at time 2543ms
+Empty Wait Array
+--------------------------
+
+
+--- Printing at time 2540ms
+Printing CPU
+Z|0    |105  |1    |200    State: CS_BRING    Update at time 2543ms
+Empty Ready Queue
+Empty Wait Array
+--------------------------
+
+time 2543ms: Process Z started using the CPU [Q <empty>]
+
+--- Printing at time 2543ms
+Printing CPU
+Z|0    |105  |0    |200    State: RUNNING     Update at time 2648ms
+Empty Ready Queue
+Empty Wait Array
+--------------------------
+
+time 2648ms: Process Z terminated [Q <empty>]
+
+--- Printing at time 2648ms
+Printing CPU
+Z|0    |105  |0    |200    State: CS_REMOVE   Update at time 2652ms
+Empty Ready Queue
+Empty Wait Array
+--------------------------
+
+time 2652ms: Simulator ended for FCFS
 
 time 0ms: Simulator started for SRT [Q <empty>]
 time 0ms: Process A arrived and added to ready queue [Q A]
-time 4ms: Process A started using the CPU [Q <empty>]
-time 20ms: Process B arrived and added to ready queue [Q B]
-time 24ms: Process A completed a CPU burst; 4 bursts to go [Q B]
-time 24ms: Process A switching out of CPU; will block on I/O until time 68ms [Q B]
-time 32ms: Process B started using the CPU [Q <empty>]
-time 68ms: Process B completed a CPU burst; 1 burst to go [Q <empty>]
-time 68ms: Process B switching out of CPU; will block on I/O until time 172ms [Q <empty>]
-time 68ms: Process A completed I/O; added to ready queue [Q A]
-time 68ms: Process C arrived and added to ready queue [Q C A]
-time 74ms: Process D arrived and added to ready queue [Q D A]
-time 76ms: Process C started using the CPU [Q D A]
-time 86ms: Process C terminated [Q D A]
-time 94ms: Process D started using the CPU [Q A]
-time 99ms: Process D terminated [Q A]
-time 107ms: Process A started using the CPU [Q <empty>]
-time 127ms: Process A completed a CPU burst; 3 bursts to go [Q <empty>]
-time 127ms: Process A switching out of CPU; will block on I/O until time 171ms [Q <empty>]
-time 171ms: Process A completed I/O; added to ready queue [Q A]
-time 172ms: Process B completed I/O; added to ready queue [Q B]
-time 175ms: Process A started using the CPU [Q B]
-time 195ms: Process A completed a CPU burst; 2 bursts to go [Q B]
-time 195ms: Process A switching out of CPU; will block on I/O until time 239ms [Q B]
-time 203ms: Process B started using the CPU [Q <empty>]
-time 239ms: Process B terminated [Q <empty>]
-time 239ms: Process A completed I/O; added to ready queue [Q A]
-time 247ms: Process A started using the CPU [Q <empty>]
-time 267ms: Process A completed a CPU burst; 1 burst to go [Q <empty>]
-time 267ms: Process A switching out of CPU; will block on I/O until time 311ms [Q <empty>]
-time 311ms: Process A completed I/O; added to ready queue [Q A]
-time 315ms: Process A started using the CPU [Q <empty>]
-time 335ms: Process A terminated [Q <empty>]
-time 339ms: Simulator ended for SRT
+time 0ms: Process B arrived and added to ready queue [Q A B]
+time 0ms: Process C arrived and added to ready queue [Q A B C]
+time 0ms: Process X arrived and added to ready queue [Q A B C X]
+time 0ms: Process Y arrived and added to ready queue [Q A B C X Y]
+time 0ms: Process Z arrived and added to ready queue [Q A B C X Y Z]
+time 4ms: Process A started using the CPU [Q B C X Y Z]
+time 104ms: Process A completed a CPU burst; 3 bursts to go [Q B C X Y Z]
+time 104ms: Process A switching out of CPU; will block on I/O until time 308ms [Q B C X Y Z]
+time 112ms: Process B started using the CPU [Q C X Y Z]
+time 213ms: Process B completed a CPU burst; 3 bursts to go [Q C X Y Z]
+time 213ms: Process B switching out of CPU; will block on I/O until time 417ms [Q C X Y Z]
+time 221ms: Process C started using the CPU [Q X Y Z]
+time 308ms: Process A completed I/O; added to ready queue [Q A X Y Z]
+time 323ms: Process C completed a CPU burst; 3 bursts to go [Q A X Y Z]
+time 323ms: Process C switching out of CPU; will block on I/O until time 527ms [Q A X Y Z]
+time 331ms: Process A started using the CPU [Q X Y Z]
+time 417ms: Process B completed I/O; added to ready queue [Q B X Y Z]
+time 431ms: Process A completed a CPU burst; 2 bursts to go [Q B X Y Z]
+time 431ms: Process A switching out of CPU; will block on I/O until time 635ms [Q B X Y Z]
+time 439ms: Process B started using the CPU [Q X Y Z]
+time 527ms: Process C completed I/O; added to ready queue [Q C X Y Z]
+time 540ms: Process B completed a CPU burst; 2 bursts to go [Q C X Y Z]
+time 540ms: Process B switching out of CPU; will block on I/O until time 744ms [Q C X Y Z]
+time 548ms: Process C started using the CPU [Q X Y Z]
+time 635ms: Process A completed I/O; added to ready queue [Q A X Y Z]
+time 650ms: Process C completed a CPU burst; 2 bursts to go [Q A X Y Z]
+time 650ms: Process C switching out of CPU; will block on I/O until time 854ms [Q A X Y Z]
+time 658ms: Process A started using the CPU [Q X Y Z]
+time 744ms: Process B completed I/O; added to ready queue [Q B X Y Z]
+time 758ms: Process A completed a CPU burst; 1 burst to go [Q B X Y Z]
+time 758ms: Process A switching out of CPU; will block on I/O until time 962ms [Q B X Y Z]
+time 766ms: Process B started using the CPU [Q X Y Z]
+time 854ms: Process C completed I/O; added to ready queue [Q C X Y Z]
+time 867ms: Process B completed a CPU burst; 1 burst to go [Q C X Y Z]
+time 867ms: Process B switching out of CPU; will block on I/O until time 1071ms [Q C X Y Z]
+time 875ms: Process C started using the CPU [Q X Y Z]
+time 962ms: Process A completed I/O; added to ready queue [Q A X Y Z]
+time 977ms: Process C completed a CPU burst; 1 burst to go [Q A X Y Z]
+time 977ms: Process C switching out of CPU; will block on I/O until time 1181ms [Q A X Y Z]
+time 985ms: Process A started using the CPU [Q X Y Z]
+time 1071ms: Process B completed I/O; added to ready queue [Q B X Y Z]
+time 1085ms: Process A terminated [Q B X Y Z]
+time 1093ms: Process B started using the CPU [Q X Y Z]
+time 1181ms: Process C completed I/O; added to ready queue [Q C X Y Z]
+time 1194ms: Process B terminated [Q C X Y Z]
+time 1202ms: Process C started using the CPU [Q X Y Z]
+time 1304ms: Process C terminated [Q X Y Z]
+time 1312ms: Process X started using the CPU [Q Y Z]
+time 1415ms: Process X completed a CPU burst; 3 bursts to go [Q Y Z]
+time 1415ms: Process X switching out of CPU; will block on I/O until time 1619ms [Q Y Z]
+time 1423ms: Process Y started using the CPU [Q Z]
+time 1527ms: Process Y completed a CPU burst; 3 bursts to go [Q Z]
+time 1527ms: Process Y switching out of CPU; will block on I/O until time 1731ms [Q Z]
+time 1535ms: Process Z started using the CPU [Q <empty>]
+time 1619ms: Process X completed I/O; added to ready queue [Q X]
+time 1640ms: Process Z completed a CPU burst; 3 bursts to go [Q X]
+time 1640ms: Process Z switching out of CPU; will block on I/O until time 1844ms [Q X]
+time 1648ms: Process X started using the CPU [Q <empty>]
+time 1731ms: Process Y completed I/O; added to ready queue [Q Y]
+time 1751ms: Process X completed a CPU burst; 2 bursts to go [Q Y]
+time 1751ms: Process X switching out of CPU; will block on I/O until time 1955ms [Q Y]
+time 1759ms: Process Y started using the CPU [Q <empty>]
+time 1844ms: Process Z completed I/O; added to ready queue [Q Z]
+time 1863ms: Process Y completed a CPU burst; 2 bursts to go [Q Z]
+time 1863ms: Process Y switching out of CPU; will block on I/O until time 2067ms [Q Z]
+time 1871ms: Process Z started using the CPU [Q <empty>]
+time 1955ms: Process X completed I/O; added to ready queue [Q X]
+time 1976ms: Process Z completed a CPU burst; 2 bursts to go [Q X]
+time 1976ms: Process Z switching out of CPU; will block on I/O until time 2180ms [Q X]
+time 1984ms: Process X started using the CPU [Q <empty>]
+time 2067ms: Process Y completed I/O; added to ready queue [Q Y]
+time 2087ms: Process X completed a CPU burst; 1 burst to go [Q Y]
+time 2087ms: Process X switching out of CPU; will block on I/O until time 2291ms [Q Y]
+time 2095ms: Process Y started using the CPU [Q <empty>]
+time 2180ms: Process Z completed I/O; added to ready queue [Q Z]
+time 2199ms: Process Y completed a CPU burst; 1 burst to go [Q Z]
+time 2199ms: Process Y switching out of CPU; will block on I/O until time 2403ms [Q Z]
+time 2207ms: Process Z started using the CPU [Q <empty>]
+time 2291ms: Process X completed I/O; added to ready queue [Q X]
+time 2312ms: Process Z completed a CPU burst; 1 burst to go [Q X]
+time 2312ms: Process Z switching out of CPU; will block on I/O until time 2516ms [Q X]
+time 2320ms: Process X started using the CPU [Q <empty>]
+time 2403ms: Process Y completed I/O; added to ready queue [Q Y]
+time 2423ms: Process X terminated [Q Y]
+time 2431ms: Process Y started using the CPU [Q <empty>]
+time 2516ms: Process Z completed I/O; added to ready queue [Q Z]
+time 2535ms: Process Y terminated [Q Z]
+time 2543ms: Process Z started using the CPU [Q <empty>]
+time 2648ms: Process Z terminated [Q <empty>]
+time 2652ms: Simulator ended for SRT
+sum wait time: 7985.000000
+sum turnaround time: 10637.000000
+number of bursts: 24
