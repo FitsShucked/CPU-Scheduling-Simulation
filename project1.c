@@ -129,6 +129,21 @@ int addProcess(process ***queue, process p, int queue_capacity) { // adds proces
     return -1;
 }
 
+int addProcessToFirst(process ***queue, process p, int queue_capacity) {
+    process *temp = &p;
+    for (int i = 0; i < queue_capacity; ++i) {
+        if ((*queue)[i] == NULL) {
+            for (int j = i; j >= queue_capacity - i; --j) {
+                moveProcess(&(*queue)[j], &(*queue)[j - 1], 0);
+            }
+            moveProcess(&(*queue)[0], &temp, 0);
+            temp = 0;
+            return 0;
+        }
+    }
+    return -1;
+}
+
 void updateQueue(process ***queue, int queue_capacity) { // moves elements in queue to the left
     if (queue_capacity == 1) return;
     int i, j;
