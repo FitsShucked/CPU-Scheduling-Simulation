@@ -239,12 +239,8 @@ void FCFS(process **processes, int n, int t_cs, float *sum_wait_time, float *sum
                     printf("time %dms: Process %c terminated ", real_t, CPU->proc_id);
                     fflush(stdout);
                 } else {
-                    if (CPU->num_bursts == 1)
-                        printf("time %dms: Process %c completed a CPU burst; %d burst to go ", real_t, CPU->proc_id,
-                               CPU->num_bursts);
-                    else
-                        printf("time %dms: Process %c completed a CPU burst; %d bursts to go ", real_t, CPU->proc_id,
-                               CPU->num_bursts);
+                    printf("time %dms: Process %c completed a CPU burst; %d burst%s to go ", real_t, CPU->proc_id,
+                           CPU->num_bursts, CPU->num_bursts == 1 ? "" : "s");
                     fflush(stdout);
                     printQueue(&ready_queue, ready_capacity);
                     printf("time %dms: Process %c switching out of CPU; will block on I/O until time %dms ", real_t,
@@ -267,7 +263,7 @@ void FCFS(process **processes, int n, int t_cs, float *sum_wait_time, float *sum
                     wait_capacity++;
                 }
                 *sum_turnaround_time += real_t - CPU->turnaround_start_time;
-#ifdef DEBUG_MODE
+#ifdef DBEUG_MODE
                 printf("\nturnaround time for %c: %dms\n\n", CPU->proc_id, real_t - CPU->turnaround_start_time);
                 fflush(stdout);
 #endif
@@ -316,6 +312,7 @@ void FCFS(process **processes, int n, int t_cs, float *sum_wait_time, float *sum
                 ready_queue[i] = NULL;
                 ready_capacity--;
                 updateQueue(&ready_queue, n);
+                change = 1;
             }
             if ((*processes)[i].initial_arrive_time == real_t &&
                 (*processes)[i].state == ARRIVING) { // process has arrived
@@ -351,34 +348,19 @@ void FCFS(process **processes, int n, int t_cs, float *sum_wait_time, float *sum
             qsort(ready_queue, ready_capacity, sizeof(process *), comparator); // clears ties
 #ifdef DEBUG_MODE
             if (terminated < n) { // debug prints of CPU, ready queue, and wait array
-                printf("\n--- Printing at time %dms\n", real_t);
+                printf("\n--- Printing at time %dms\n%s CPU\n", real_t, CPU != NULL ? "Printing" : "Empty");
                 fflush(stdout);
                 if (CPU != NULL) {
-                    printf("Printing CPU\n");
-                    fflush(stdout);
                     process **temp = &CPU;
                     debugPrintQueue(&temp, 1);
                     temp = NULL;
-                } else {
-                    printf("Empty CPU\n");
-                    fflush(stdout);
                 }
-                if (ready_capacity > 0) {
-                    printf("Printing Ready Queue\n");
-                    fflush(stdout);
-                    debugPrintQueue(&ready_queue, ready_capacity);
-                } else {
-                    printf("Empty Ready Queue\n");
-                    fflush(stdout);
-                }
-                if (wait_capacity > 0) {
-                    printf("Printing Wait Array\n");
-                    fflush(stdout);
-                    debugPrintQueue(&wait_array, wait_capacity);
-                } else {
-                    printf("Empty Wait Array\n");
-                    fflush(stdout);
-                }
+                printf("%s Ready Queue\n", ready_capacity > 0 ? "Printing" : "Empty");
+                fflush(stdout);
+                if (ready_capacity > 0) debugPrintQueue(&ready_queue, ready_capacity);
+                printf("%s Wait Array\n", wait_capacity > 0 ? "Printing" : "Empty");
+                fflush(stdout);
+                if (wait_capacity > 0) debugPrintQueue(&wait_array, wait_capacity);
                 printf("--------------------------\n\n");
                 fflush(stdout);
             }
@@ -407,12 +389,81 @@ void RR(process **processes, int n, int t_cs, float *sum_wait_time, float *sum_t
     process **ready_queue = createQueue(n);
     process **wait_array = createQueue(n);
     process *CPU = NULL; // current working process
+    int slice_count = 0;
     printf("time %dms: Simulator started for RR ", real_t);
     fflush(stdout);
     printQueue(&ready_queue, ready_capacity);
     while (terminated < n) {
         for (int i = 0; i < n - terminated; ++i) {
             // loop for processes leaving the CPU and getting blocked
+            if (CPU != NULL && CPU->update_time == real_t && CPU->state == RUNNING) {
+                if (CPU->num_bursts == 0) {
+                    printf("time %dms: Process %c terminated ", real_t, CPU->proc_id);
+                    fflush(stdout);
+                } else {
+                    printf("time %dms: Process %c completed a CPU burst; %d burst%s to go ", real_t, CPU->proc_id,
+                           CPU->num_bursts, CPU->num_bursts == 1 ? "" : "s");
+                    fflush(stdout);
+                    printQueue(&ready_queue, ready_capacity);
+                    printf("time %dms: Process %c switching out of CPU; will block on I/O until time %dms ", real_t,
+                           CPU->proc_id, real_t + (t_cs / 2) + CPU->io_time);
+                    fflush(stdout);
+                }
+                printQueue(&ready_queue, ready_capacity);
+                if (ready_capacity == 0) {
+                    // no process in ready queue
+                    CPU->update_time += t_slice;
+                } else {
+                    CPU->update_time += (t_cs / 2);
+                    CPU->state = CS_REMOVE;
+                    context_switching = true;
+                    change = true;
+                }
+
+            }
+            if (CPU != NULL && CPU->update_time == real_t && CPU->state == CS_REMOVE) {
+                if (CPU->num_bursts == 0) {
+                    terminated++;
+                } else {
+                    int pos = 0;
+                    pos = addProcess(&wait_array, *CPU, n);
+                    wait_array[pos]->update_time += wait_array[pos]->io_time;
+                    wait_array[pos]->state = BLOCKED;
+                    wait_capacity++;
+                }
+                *sum_turnaround_time += real_t - CPU->turnaround_start_time;
+#ifdef DBEUG_MODE
+                printf("\nturnaround time for %c: %dms\n\n", CPU->proc_id, real_t - CPU->turnaround_start_time);
+                fflush(stdout);
+#endif
+                context_switching = false;
+                free(CPU);
+                CPU = NULL;
+                change = true;
+            }
+            if (wait_array[i] != NULL && wait_array[i]->update_time == real_t &&
+                wait_array[i]->state == BLOCKED) {
+                // process is finished with I/O and placed on ready queue
+                int pos = 0;
+                if (rr_add == 0) {
+                    // add to end of queue
+                    pos = addProcess(&ready_queue, *(wait_array[i]), n);
+                } else {
+
+                }
+                free(wait_array[i]);
+                wait_array[i] = NULL;
+                ready_queue[pos]->turnaround_start_time = real_t;
+                ready_queue[pos]->wait_start_time = real_t;
+                ready_queue[pos]->update_time = real_t;
+                ready_queue[pos]->state = READY;
+                ready_capacity++;
+                wait_capacity--;
+                printf("time %dms: Process %c completed I/O; added to ready queue ", real_t, ready_queue[pos]->proc_id);
+                fflush(stdout);
+                printQueue(&ready_queue, ready_capacity);
+                change = true;
+            }
         }
         for (int i = 0; i < n - terminated; ++i) {
             // loop for processes arriving and entering the CPU
@@ -454,7 +505,11 @@ void RR(process **processes, int n, int t_cs, float *sum_wait_time, float *sum_t
                 printf("time %dms: Process %c started using the CPU ", real_t, CPU->proc_id);
                 fflush(stdout);
                 printQueue(&ready_queue, ready_capacity);
-                CPU->update_time += CPU->cpu_burst_time;
+                if (CPU->cpu_burst_time > t_slice) {
+                    CPU->update_time += t_slice;
+                } else {
+                    CPU->update_time = CPU->cpu_burst_time;
+                }
                 CPU->state = RUNNING;
                 (CPU->num_bursts)--;
                 context_switching = false;
@@ -482,34 +537,19 @@ void RR(process **processes, int n, int t_cs, float *sum_wait_time, float *sum_t
             // clears ties
 #ifdef DEBUG_MODE
             if (terminated < n) { // debug prints of CPU, ready queue, and wait array
-                printf("\n--- Printing at time %dms\n", real_t);
+                printf("\n--- Printing at time %dms\n%s CPU\n", real_t, CPU != NULL ? "Printing" : "Empty");
                 fflush(stdout);
                 if (CPU != NULL) {
-                    printf("Printing CPU\n");
-                    fflush(stdout);
                     process **temp = &CPU;
                     debugPrintQueue(&temp, 1);
                     temp = NULL;
-                } else {
-                    printf("Empty CPU\n");
-                    fflush(stdout);
                 }
-                if (ready_capacity > 0) {
-                    printf("Printing Ready Queue\n");
-                    fflush(stdout);
-                    debugPrintQueue(&ready_queue, ready_capacity);
-                } else {
-                    printf("Empty Ready Queue\n");
-                    fflush(stdout);
-                }
-                if (wait_capacity > 0) {
-                    printf("Printing Wait Array\n");
-                    fflush(stdout);
-                    debugPrintQueue(&wait_array, wait_capacity);
-                } else {
-                    printf("Empty Wait Array\n");
-                    fflush(stdout);
-                }
+                printf("%s Ready Queue\n", ready_capacity > 0 ? "Printing" : "Empty");
+                fflush(stdout);
+                if (ready_capacity > 0) debugPrintQueue(&ready_queue, ready_capacity);
+                printf("%s Wait Array\n", wait_capacity > 0 ? "Printing" : "Empty");
+                fflush(stdout);
+                if (wait_capacity > 0) debugPrintQueue(&wait_array, wait_capacity);
                 printf("--------------------------\n\n");
                 fflush(stdout);
             }
@@ -519,6 +559,7 @@ void RR(process **processes, int n, int t_cs, float *sum_wait_time, float *sum_t
             break;
         }
         real_t++;
+        slice_count++;
     }
     printf("time %dms: Simulator ended for RR\n", real_t);
     fflush(stdout);
