@@ -244,7 +244,7 @@ void FCFS(process** processes, int n, int t_cs, float* sum_wait_time, float* sum
 					wait_capacity++;
 				}
 				*sum_turnaround_time += real_t - CPU->turnaround_start_time;
-				#ifdef DBEUG_MODE
+				#ifdef DEBUG_MODE
 					printf("\nturnaround time for %c: %dms\n\n", CPU->proc_id, real_t - CPU->turnaround_start_time);
 					fflush(stdout);
 				#endif
