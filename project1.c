@@ -418,7 +418,7 @@ void RR(process **processes, int n, int t_cs, float *sum_wait_time, float *sum_t
             // loop for processes leaving the CPU and getting blocked
             if (CPU != NULL && CPU->update_time == real_t && CPU->state == RUNNING) {
                 bool IOCheck = false;
-                bool terminatedCheck= false;
+                bool terminatedCheck = false;
                 if (CPU->cpu_burst_time_remaining == 0) {
                     (CPU->num_bursts)--;
                     if (CPU->num_bursts == 0) {
@@ -510,6 +510,7 @@ void RR(process **processes, int n, int t_cs, float *sum_wait_time, float *sum_t
                     // add to end of queue
                     pos = addProcess(&ready_queue, *(wait_array[i]), n);
                 } else {
+                    pos = addProcessToFirst(&ready_queue, *(wait_array[i]), n);
 
                 }
                 free(wait_array[i]);
